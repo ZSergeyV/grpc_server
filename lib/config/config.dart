@@ -1,0 +1,2 @@
+const String SERVER_ADRESS = '192.168.10.14:5000';
+const int LIMIT_PRODUCT = 50;
