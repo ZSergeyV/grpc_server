@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 // import 'package:grpc_server/config/config.dart';
 import 'package:grpc_server/core/model/products.dart';
+import 'package:grpc_server/resources/local_store.dart';
 // import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import 'package:equatable/equatable.dart';
@@ -12,11 +13,13 @@ part 'products_event.dart';
 part 'products_state.dart';
 
 class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
-  ProductsBloc({required this.httpClient}) : super(const ProductsState()) {
+  ProductsBloc({required this.store, required this.httpClient})
+      : super(const ProductsState()) {
     on<ProductsFetched>(_onProductsFetched);
   }
 
   final http.Client httpClient;
+  final LocalStoreSettings store;
 
   Future<void> _onProductsFetched(
       ProductsFetched event, Emitter<ProductsState> emit) async {

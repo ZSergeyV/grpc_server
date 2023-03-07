@@ -1,23 +1,25 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
-// import 'package:grpc_server/config/config.dart';
 import 'package:grpc_server/core/model/categories.dart';
-// import 'package:grpc_server/core/model/settings.dart';
+import 'package:grpc_server/resources/local_store.dart';
 // import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import 'package:equatable/equatable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'categories_event.dart';
 part 'categories_state.dart';
 
 class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
-  CategoriesBloc({required this.httpClient}) : super(const CategoriesState()) {
+  CategoriesBloc({required this.store, required this.httpClient})
+      : super(const CategoriesState()) {
     on<CategoriesFetched>(_onCategoriesFetched);
   }
 
   final http.Client httpClient;
+  final LocalStoreSettings store;
+
+  //settings.add(ReadSettingsEvent);
 
   Future<void> _onCategoriesFetched(
       CategoriesFetched event, Emitter<CategoriesState> emit) async {
@@ -45,8 +47,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   }
 
   Future<List<Categories>> _fetchCategories([int startIndex = 0]) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String SERVER_ADRESS = prefs.getString('SERVER_ADRESS') ?? '';
+    final String SERVER_ADRESS = await store.getValue('SERVER_ADRESS');
 
     final response = await httpClient.get(
       Uri.http(SERVER_ADRESS, '/api/v1/get-categories'),

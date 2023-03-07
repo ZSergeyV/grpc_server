@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:grpc_server/config/theme.dart';
-// import 'package:grpc_server/core/model/settings.dart';
 import 'package:grpc_server/features/screens/screens.dart';
 import 'package:grpc_server/core/router.dart' as router;
 

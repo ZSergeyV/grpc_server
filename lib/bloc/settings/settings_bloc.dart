@@ -2,20 +2,18 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:grpc_server/resources/local_store.dart';
-// import 'package:grpc_server/core/model/settings.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';
 
 class SettingBloc extends Bloc<SettingEvent, SettingState> {
-  SettingBloc() : super(const SettingState()) {
+  SettingBloc({required this.store}) : super(const SettingState()) {
     on<ReadSettingsEvent>(_onSettingsRead);
     on<WriteSettingEvent>(_onSettingsWrite);
     //on<InitSettingsEvent>(_onSettingsInit);
   }
 
-  final LocalStoreSettings _localStore = LocalStoreSettings();
+  final LocalStoreSettings store;
 
   // Future<void> _onSettingsInit(
   //     InitSettingsEvent event, Emitter<SettingState> emit) async {
@@ -26,6 +24,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       ReadSettingsEvent event, Emitter<SettingState> emit) async {
     try {
       if (state.status == SettingsStatus.read) {
+        //await store.initStore();
         final appSettings = await _getSettings();
         return emit(state.copyWith(
           status: SettingsStatus.success,
@@ -40,8 +39,8 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   Future<Map<String, dynamic>> _getSettings() async {
     Map<String, dynamic> result = {};
 
-    result['SERVER_ADRESS'] = await _localStore.getValue('SERVER_ADRESS') ?? '';
-    result['LIMIT_PRODUCT'] = await _localStore.getValue('LIMIT_PRODUCT') ?? 50;
+    result['SERVER_ADRESS'] = await store.getValue('SERVER_ADRESS') ?? '';
+    result['LIMIT_PRODUCT'] = await store.getValue('LIMIT_PRODUCT') ?? 50;
     return result;
   }
 }

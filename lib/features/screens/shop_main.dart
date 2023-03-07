@@ -5,6 +5,7 @@ import 'package:grpc_server/bloc/products/products_bloc.dart';
 import 'package:grpc_server/bloc/settings/settings_bloc.dart';
 import 'package:grpc_server/features/screens/screens.dart';
 import 'package:grpc_server/features/widgets/shop_widgets.dart';
+import 'package:grpc_server/resources/local_store.dart';
 import 'package:http/http.dart' as http;
 
 class MainShopPage extends StatelessWidget {
@@ -16,24 +17,30 @@ class MainShopPage extends StatelessWidget {
         ModalRoute.of(context)!.settings.name == ShopMainPageRoute
             ? true
             : false;
+    final LocalStoreSettings localStore = LocalStoreSettings();
+
     return Scaffold(
         backgroundColor: const Color(0xFFC9C9C9),
         drawer: const LeftMenuShop(),
         body: MultiBlocProvider(
           providers: [
+            BlocProvider<SettingBloc>(
+                lazy: false,
+                create: (BuildContext context) =>
+                    SettingBloc(store: localStore)..add(ReadSettingsEvent())),
+            //..add(ReadSettingsEvent())
             BlocProvider<CategoriesBloc>(
-                create: (_) => CategoriesBloc(httpClient: http.Client())
-                  ..add(CategoriesFetched())),
+                create: (BuildContext context) =>
+                    CategoriesBloc(store: localStore, httpClient: http.Client())
+                      ..add(CategoriesFetched())),
             BlocProvider<ProductsBloc>(
-                create: (_) => ProductsBloc(httpClient: http.Client())
+                create: (_) => ProductsBloc(
+                    store: localStore, httpClient: http.Client())
                   ..add(ProductsFetched(
                       !isCategory
                           ? ModalRoute.of(context)!.settings.arguments as int
                           : -1,
                       0))),
-            BlocProvider<SettingBloc>(
-                lazy: false,
-                create: (_) => SettingBloc()..add(ReadSettingsEvent())),
           ],
           child: OrientationBuilder(
               builder: (context, orientation) => SafeArea(
