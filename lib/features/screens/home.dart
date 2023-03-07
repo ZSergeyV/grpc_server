@@ -9,7 +9,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(body: OrientationBuilder(builder: (context, orientation) {
       return SafeArea(
         child: GestureDetector(
-            child: Container(
+            child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: Stack(

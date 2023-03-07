@@ -5,10 +5,8 @@ abstract class SettingEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class ReadSettingsEvent extends SettingEvent {
-  //ReadSettingsEvent();
-}
+class InitSettingsEvent extends SettingEvent {}
 
-class WriteSettingEvent extends SettingEvent {
-  //WriteSettingEvent();
-}
+class ReadSettingsEvent extends SettingEvent {}
+
+class WriteSettingEvent extends SettingEvent {}
