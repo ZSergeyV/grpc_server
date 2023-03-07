@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grpc_server/bloc/products/products_bloc.dart';
 import 'package:grpc_server/features/screens/screens.dart';
 
 class TopMenuShop extends StatelessWidget {
-  const TopMenuShop({super.key});
+  const TopMenuShop({super.key, required this.isCategory});
+  final bool isCategory;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +58,10 @@ class TopMenuShop extends StatelessWidget {
                   size: 30,
                 ),
                 onPressed: () {
-                  showSearch(context: context, delegate: AppSearchDelegate());
+                  showSearch(
+                      context: context,
+                      delegate: AppSearchDelegate(),
+                      useRootNavigator: true);
                 },
               ),
               IconButton(
@@ -96,6 +102,12 @@ class TopMenuShop extends StatelessWidget {
 
 class AppSearchDelegate extends SearchDelegate {
   @override
+  String? get searchFieldLabel => 'Поиск';
+
+  @override
+  TextInputType? get keyboardType => TextInputType.text;
+
+  @override
   List<Widget>? buildActions(BuildContext context) => [
         IconButton(
             icon: const Icon(Icons.clear),
@@ -115,12 +127,12 @@ class AppSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
-    throw UnimplementedError();
+    return const Text('data');
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    // return BlocBuilder<ProductsBloc, ProductsState>(builder: (context, state) {
     List<String> suggestions = ['12323', '45654', '798978'];
 
     return ListView.builder(
@@ -132,6 +144,7 @@ class AppSearchDelegate extends SearchDelegate {
             onTap: () => query = item,
           );
         });
+    // });
   }
 }
 

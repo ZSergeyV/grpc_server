@@ -54,7 +54,7 @@ class MainShopPage extends StatelessWidget {
                                         ? 0.99
                                         : 0.7),
                                 height: 60,
-                                child: const TopMenuShop(),
+                                child: TopMenuShop(isCategory: isCategory),
                               ),
                               Expanded(
                                 child: isCategory
