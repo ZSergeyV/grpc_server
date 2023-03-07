@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
-// import 'package:grpc_server/config/config.dart';
 import 'package:grpc_server/core/model/products.dart';
 import 'package:grpc_server/resources/local_store.dart';
 // import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import 'package:equatable/equatable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'products_event.dart';
 part 'products_state.dart';
@@ -49,9 +47,8 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
 
   Future<List<Product>> _fetchProducts(int igCategory,
       [int startIndex = 0]) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String SERVER_ADRESS = prefs.getString('SERVER_ADRESS') ?? '';
-    int LIMIT_PRODUCT = prefs.getInt('LIMIT_PRODUCT') ?? 50;
+    String SERVER_ADRESS = await store.getValue('SERVER_ADRESS') ?? '';
+    int LIMIT_PRODUCT = await store.getValue('LIMIT_PRODUCT') ?? 50;
 
     final response = await httpClient.get(
       Uri.http(

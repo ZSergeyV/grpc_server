@@ -28,7 +28,6 @@ class MainShopPage extends StatelessWidget {
                 lazy: false,
                 create: (BuildContext context) =>
                     SettingBloc(store: localStore)..add(ReadSettingsEvent())),
-            //..add(ReadSettingsEvent())
             BlocProvider<CategoriesBloc>(
                 create: (BuildContext context) =>
                     CategoriesBloc(store: localStore, httpClient: http.Client())

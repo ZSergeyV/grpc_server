@@ -19,8 +19,6 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   final http.Client httpClient;
   final LocalStoreSettings store;
 
-  //settings.add(ReadSettingsEvent);
-
   Future<void> _onCategoriesFetched(
       CategoriesFetched event, Emitter<CategoriesState> emit) async {
     if (state.hasReachedMax) return;
