@@ -106,8 +106,6 @@ Widget ProductListItem(BuildContext context, Product product) {
             ? Image.network(
                 'http://$SERVER_ADRESS/static/images/thumbnail/$thumb')
             : Image.asset('assets/images/no-image.png'),
-        //Text('${product.code}', style: textTheme.bodySmall),
-        //$SERVER_ADRESS
         title: Row(
           children: [
             Expanded(
@@ -167,88 +165,6 @@ Widget ProductListItem(BuildContext context, Product product) {
     ),
   );
 }
-
-// class ProductListItem extends StatelessWidget {
-//   const ProductListItem({super.key, required this.product});
-
-//   final Product product;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     //final textTheme = Theme.of(context).textTheme;
-//     final thumb = product.thumb;
-//     return Padding(
-//       padding: const EdgeInsets.all(2.0),
-//       child: Material(
-//         elevation: 2,
-//         child: ListTile(
-//           onTap: () => debugPrint('Tap'),
-//           onLongPress: () => debugPrint('LongTap'),
-//           leading: thumb != ''
-//               ? Image.network(
-//                   'http://$SERVER_ADRESS/static/images/thumbnail/$thumb')
-//               : Image.asset('assets/images/no-image.png'),
-//           //Text('${product.code}', style: textTheme.bodySmall),
-//           title: Row(
-//             children: [
-//               Expanded(
-//                 flex: 6,
-//                 child: Text(
-//                   product.name,
-//                   maxLines: 5,
-//                   softWrap: true,
-//                   style: const TextStyle(fontSize: 15),
-//                 ),
-//               ),
-//               Expanded(
-//                 child: Text(
-//                   textAlign: TextAlign.center,
-//                   '${product.price.toStringAsFixed(0)} р.',
-//                   maxLines: 2,
-//                   softWrap: true,
-//                   style: const TextStyle(fontSize: 15),
-//                 ),
-//               ),
-//               Expanded(
-//                 child: Text(
-//                   textAlign: TextAlign.center,
-//                   product.quantityStore.toString(),
-//                   maxLines: 2,
-//                   softWrap: true,
-//                   style: const TextStyle(fontSize: 15),
-//                 ),
-//               ),
-//               Expanded(
-//                 child: Text(
-//                   textAlign: TextAlign.center,
-//                   product.storageCell +
-//                       (product.storageCellStock != ''
-//                           ? '\n (${product.storageCellStock})'
-//                           : ''),
-//                   maxLines: 2,
-//                   softWrap: true,
-//                   style: const TextStyle(fontSize: 15),
-//                 ),
-//               ),
-//               // const Expanded(
-//               //   child: Text(
-//               //     textAlign: TextAlign.center,
-//               //     '455',
-//               //     maxLines: 2,
-//               //     softWrap: true,
-//               //     style: TextStyle(fontSize: 15),
-//               //   ),
-//               // ),
-//             ],
-//           ),
-//           //isThreeLine: true,
-
-//           //dense: true,
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class BottomLoader extends StatelessWidget {
   const BottomLoader({super.key});
