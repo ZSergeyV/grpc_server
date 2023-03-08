@@ -276,8 +276,53 @@ class SaleTotalWidget extends StatelessWidget {
 }
 
 Widget CartProductItem(Product product) {
+  const TextStyle styleTextPrice = TextStyle(fontWeight: FontWeight.w600);
+
   return Padding(
-    padding: const EdgeInsets.all(5.0),
-    child: Material(elevation: 2, child: ListTile(title: Text(product.name))),
+    padding: const EdgeInsets.all(4.0),
+    child: Material(
+        elevation: 2,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                      child: Text(product.name,
+                          maxLines: 5, overflow: TextOverflow.clip)),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      child: Text(
+                    'Цена: ${product.price.toString()} р.',
+                    maxLines: 1,
+                    overflow: TextOverflow.clip,
+                    textAlign: TextAlign.left,
+                    style: styleTextPrice,
+                  )),
+                  Expanded(
+                      child: Text(
+                    '2 шт.',
+                    maxLines: 1,
+                    overflow: TextOverflow.clip,
+                    textAlign: TextAlign.center,
+                    style: styleTextPrice,
+                  )),
+                  Expanded(
+                      child: Text(
+                    '200 р.',
+                    maxLines: 1,
+                    overflow: TextOverflow.clip,
+                    textAlign: TextAlign.right,
+                    style: styleTextPrice,
+                  )),
+                ],
+              )
+            ],
+          ),
+        )),
   );
 }
