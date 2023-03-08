@@ -1,77 +1,82 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 
-class RightPanelCart extends StatelessWidget {
-  const RightPanelCart({super.key});
+class Cart extends StatelessWidget {
+  const Cart({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const BasketTopWidget(),
-        Container(
-          width: MediaQuery.of(context).size.width * 0.29,
-          height: MediaQuery.of(context).size.height - 140,
-          decoration: const BoxDecoration(
-              color: Color(0xFFBCBCBC),
-              border: Border(
-                left: BorderSide(
-                  color: Color.fromARGB(255, 168, 168, 168),
-                  width: 1.0,
+    return BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const BasketTopWidget(),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.29,
+            height: MediaQuery.of(context).size.height - 140,
+            decoration: const BoxDecoration(
+                color: Color(0xFFBCBCBC),
+                border: Border(
+                  left: BorderSide(
+                    color: Color.fromARGB(255, 168, 168, 168),
+                    width: 1.0,
+                  ),
+                )
+                // color: FlutterFlowTheme.of(context).checkListProduct,
                 ),
-              )
-              // color: FlutterFlowTheme.of(context).checkListProduct,
-              ),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: SizedBox(
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: const AlignmentDirectional(0, 0),
-                        child: SvgPicture.asset(
-                          'assets/images/2703080_cart_basket_ecommerce_shop_icon.svg',
-                          width: MediaQuery.of(context).size.width * 0.1,
-                          fit: BoxFit.cover,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: const AlignmentDirectional(0, 0),
+                          child: SvgPicture.asset(
+                            'assets/images/2703080_cart_basket_ecommerce_shop_icon.svg',
+                            width: MediaQuery.of(context).size.width * 0.1,
+                            fit: BoxFit.cover,
+                            color: Colors.black12,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        Expanded(
-          child: InkWell(
-            onTap: () async {
-              await showDialog(
-                context: context,
-                builder: (alertDialogContext) {
-                  return AlertDialog(
-                    title: const Text('test'),
-                    content: const Text('message'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(alertDialogContext),
-                        child: const Text('Ok'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-            child: const SaleTotalWidget(),
+          Expanded(
+            child: InkWell(
+              onTap: () async {
+                await showDialog(
+                  context: context,
+                  builder: (alertDialogContext) {
+                    return AlertDialog(
+                      title: const Text('test'),
+                      content: const Text('message'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(alertDialogContext),
+                          child: const Text('Ok'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: const SaleTotalWidget(),
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 }
 

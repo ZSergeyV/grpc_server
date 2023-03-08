@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:grpc_server/bloc/settings/settings_bloc.dart';
+// import 'package:grpc_server/bloc/settings/settings_bloc.dart';
 import 'package:grpc_server/core/model/products.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 import 'package:grpc_server/bloc/categories/categories_bloc.dart';
 import 'package:grpc_server/bloc/products/products_bloc.dart';
 import 'package:grpc_server/bloc/settings/settings_bloc.dart';
@@ -29,6 +30,8 @@ class MainShopPage extends StatelessWidget {
                 lazy: false,
                 create: (BuildContext context) =>
                     SettingBloc(store: localStore)..add(ReadSettingsEvent())),
+            BlocProvider<CartBloc>(
+                lazy: false, create: (BuildContext context) => CartBloc()),
             BlocProvider<CategoriesBloc>(
                 create: (BuildContext context) =>
                     CategoriesBloc(store: localStore, httpClient: http.Client())
@@ -73,7 +76,7 @@ class MainShopPage extends StatelessWidget {
                         ),
                         orientation == Orientation.portrait
                             ? const SizedBox()
-                            : const RightPanelCart(),
+                            : const Cart(),
                       ],
                     ),
                   )),
