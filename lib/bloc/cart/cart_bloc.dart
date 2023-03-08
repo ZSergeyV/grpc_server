@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+// import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grpc_server/core/model/products.dart';
 
@@ -14,7 +15,15 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   Future<void> _onAddCartProduct(
       AddProduct event, Emitter<CartState> emit) async {
-    final int productLenght = state.products.length;
+    //final int productLenght = state.products.length;
+    final List<Product> products = List.from(state.products)
+      ..add(event.product);
+    //products.add(event.product);
+
+    return emit(state.copyWith(
+      status: CartStatus.initial,
+      products: products,
+    ));
 
     // try {
     //   if (state.status == ProductsStatus.initial) {
@@ -39,11 +48,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   }
 
   Future<void> _onDeleteCartProduct(
-      DeleteProduct event, Emitter<CartState> emit) async {
-    final int productLenght = state.products.length;
-  }
+      DeleteProduct event, Emitter<CartState> emit) async {}
 
   Future<void> _onClearCart(ClearProduct event, Emitter<CartState> emit) async {
-    final int productLenght = state.products.length;
+    return emit(state.copyWith(
+      status: CartStatus.initial,
+      products: [],
+    ));
   }
 }

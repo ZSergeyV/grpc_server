@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 import 'package:grpc_server/bloc/products/products_bloc.dart';
 import 'package:grpc_server/bloc/settings/settings_bloc.dart';
 import 'package:grpc_server/core/model/products.dart';
@@ -92,6 +93,8 @@ class _ListProductsState extends State<ListProducts> {
 Widget ProductListItem(BuildContext context, Product product) {
   final thumb = product.thumb;
   final SettingState _settings = context.watch<SettingBloc>().state;
+  final _cartBloc = context.read<CartBloc>();
+
   String SERVER_ADRESS = _settings.settings['SERVER_ADRESS'];
   return Padding(
     padding: const EdgeInsets.all(2.0),
@@ -100,7 +103,7 @@ Widget ProductListItem(BuildContext context, Product product) {
       child: ListTile(
         onTap: () => Navigator.pushNamed(context, ProductItemPageRoute,
             arguments: product),
-        onLongPress: () => debugPrint('LongTap'),
+        onLongPress: () => _cartBloc.add(AddProduct(product)),
         leading: thumb != ''
             ? Image.network(
                 'http://$SERVER_ADRESS/static/images/thumbnail/$thumb')

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grpc_server/bloc/cart/cart_bloc.dart';
+import 'package:grpc_server/core/model/products.dart';
 
 class Cart extends StatelessWidget {
   const Cart({super.key});
@@ -13,7 +14,7 @@ class Cart extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const BasketTopWidget(),
+          const CartTopWidget(),
           Container(
             width: MediaQuery.of(context).size.width * 0.29,
             height: MediaQuery.of(context).size.height - 140,
@@ -36,6 +37,34 @@ class Cart extends StatelessWidget {
                     height: double.infinity,
                     child: Stack(
                       children: [
+                        Builder(builder: (context) {
+                          switch (state.status) {
+                            case CartStatus.initial:
+                              return ListView.builder(
+                                itemBuilder: (BuildContext context, int index) {
+                                  return CartProductItem(state.products[index]);
+                                },
+                                itemCount: state.products.length,
+                                //ProductListItem(product: state.products[index])
+                              );
+                            case CartStatus.success:
+                              // TODO: Handle this case.
+                              break;
+                            case CartStatus.error:
+                              // TODO: Handle this case.
+                              break;
+                            case CartStatus.pay:
+                              // TODO: Handle this case.
+                              break;
+                            case CartStatus.clear:
+                              // TODO: Handle this case.
+                              break;
+                            case CartStatus.cancel:
+                              // TODO: Handle this case.
+                              break;
+                          }
+                          return const Text('1212');
+                        }),
                         Align(
                           alignment: const AlignmentDirectional(0, 0),
                           child: SvgPicture.asset(
@@ -80,11 +109,51 @@ class Cart extends StatelessWidget {
   }
 }
 
-class BasketTopWidget extends StatelessWidget {
-  const BasketTopWidget({super.key});
+class CartTopWidget extends StatelessWidget {
+  const CartTopWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final _cartBloc = context.read<CartBloc>();
+
+    Future<void> _showDialogClearCart() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            // <-- SEE HERE
+            title: const Text('Очистка корзины'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[
+                  Text('Вы уверены что хотите очистить корзину?'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Нет'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text(
+                  'Да',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  _cartBloc.add(ClearProduct());
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Container(
       width: MediaQuery.of(context).size.width * 0.29,
       height: 65,
@@ -110,6 +179,7 @@ class BasketTopWidget extends StatelessWidget {
             padding: EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
             child: Text(
               'Корзина',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               // style: FlutterFlowTheme.of(context).bodyText1.override(
               //       fontFamily: 'Poppins',
               //       color: FlutterFlowTheme.of(context).topMenuText,
@@ -129,7 +199,7 @@ class BasketTopWidget extends StatelessWidget {
               size: 30,
             ),
             onPressed: () {
-              print('IconButton pressed ...');
+              _showDialogClearCart();
             },
           ),
         ],
@@ -203,4 +273,11 @@ class SaleTotalWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget CartProductItem(Product product) {
+  return Padding(
+    padding: const EdgeInsets.all(5.0),
+    child: Material(elevation: 2, child: ListTile(title: Text(product.name))),
+  );
 }

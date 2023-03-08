@@ -14,6 +14,7 @@ class CartState extends Equatable {
   CartState copyWith({
     CartStatus? status,
     List<Product>? categories,
+    required List<Product> products,
   }) {
     return CartState(
       status: status ?? this.status,
