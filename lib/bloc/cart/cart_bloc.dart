@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 // import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grpc_server/core/model/cart.dart';
 import 'package:grpc_server/core/model/products.dart';
 
 part 'cart_events.dart';
@@ -16,14 +17,38 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   Future<void> _onAddCartProduct(
       AddProduct event, Emitter<CartState> emit) async {
     //final int productLenght = state.products.length;
-    final List<Product> products = List.from(state.products)
-      ..add(event.product);
-    //products.add(event.product);
 
+    // Проверим есть ли данный товар в корзине
+    int itemCount = 0, index = 0;
+    double itemPrice = 0, totalPrice = 0;
+    List<CartItem> items = state.items;
+
+    CartItem newItemCart =
+        CartItem(product: event.product, count: 1, price: event.product.price);
+
+    for (var element in state.items) {
+      if (element.product == event.product) {
+        itemCount = element.count + 1;
+        itemPrice = element.price + event.product.price;
+
+        items[index] = CartItem(
+            product: event.product, count: itemCount, price: itemPrice);
+      }
+      index++;
+    }
+
+    if (itemCount == 0 && itemPrice == 0) {
+      items = List.from(state.items)..add(newItemCart);
+    }
+
+    for (var element in items) {
+      totalPrice = totalPrice + element.price;
+    }
     return emit(state.copyWith(
-      status: CartStatus.initial,
-      products: products,
-    ));
+        status: CartStatus.initial,
+        items: items,
+        totalCount: items.length,
+        totalPrice: totalPrice));
 
     // try {
     //   if (state.status == ProductsStatus.initial) {
@@ -52,8 +77,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   Future<void> _onClearCart(ClearProduct event, Emitter<CartState> emit) async {
     return emit(state.copyWith(
-      status: CartStatus.initial,
-      products: [],
-    ));
+        status: CartStatus.initial, items: [], totalCount: 0, totalPrice: 0));
   }
 }

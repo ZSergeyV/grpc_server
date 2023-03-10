@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grpc_server/bloc/cart/cart_bloc.dart';
-import 'package:grpc_server/core/model/products.dart';
+import 'package:grpc_server/core/model/cart.dart';
+// import 'package:grpc_server/core/model/products.dart';
 
 class Cart extends StatelessWidget {
   const Cart({super.key});
@@ -42,9 +43,9 @@ class Cart extends StatelessWidget {
                             case CartStatus.initial:
                               return ListView.builder(
                                 itemBuilder: (BuildContext context, int index) {
-                                  return CartProductItem(state.products[index]);
+                                  return CartProductItem(state.items[index]);
                                 },
-                                itemCount: state.products.length,
+                                itemCount: state.items.length,
                                 //ProductListItem(product: state.products[index])
                               );
                             case CartStatus.success:
@@ -63,7 +64,7 @@ class Cart extends StatelessWidget {
                               // TODO: Handle this case.
                               break;
                           }
-                          return const Text('1212');
+                          return const SizedBox();
                         }),
                         Align(
                           alignment: const AlignmentDirectional(0, 0),
@@ -213,6 +214,7 @@ class SaleTotalWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _cartBloc = context.watch<CartBloc>();
     return Container(
       width: MediaQuery.of(context).size.width * 0.29, //width?.toDouble(),
       height: 65,
@@ -244,7 +246,7 @@ class SaleTotalWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
                   child: Text(
-                    '0.0 р.',
+                    '${_cartBloc.state.totalPrice} р.',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           color: Colors.white,
                           fontSize: 22,
@@ -275,7 +277,7 @@ class SaleTotalWidget extends StatelessWidget {
   }
 }
 
-Widget CartProductItem(Product product) {
+Widget CartProductItem(CartItem item) {
   const TextStyle styleTextPrice = TextStyle(fontWeight: FontWeight.w600);
 
   return Padding(
@@ -289,7 +291,7 @@ Widget CartProductItem(Product product) {
               Row(
                 children: [
                   Expanded(
-                      child: Text(product.name,
+                      child: Text(item.product.name,
                           maxLines: 5, overflow: TextOverflow.clip)),
                 ],
               ),
@@ -297,23 +299,23 @@ Widget CartProductItem(Product product) {
                 children: [
                   Expanded(
                       child: Text(
-                    'Цена: ${product.price.toString()} р.',
+                    'Цена: ${item.product.price.toString()} р.',
                     maxLines: 1,
                     overflow: TextOverflow.clip,
                     textAlign: TextAlign.left,
                     style: styleTextPrice,
                   )),
-                  const Expanded(
+                  Expanded(
                       child: Text(
-                    '2 шт.',
+                    '${item.count} шт.',
                     maxLines: 1,
                     overflow: TextOverflow.clip,
                     textAlign: TextAlign.center,
                     style: styleTextPrice,
                   )),
-                  const Expanded(
+                  Expanded(
                       child: Text(
-                    '200 р.',
+                    '${item.price} р.',
                     maxLines: 1,
                     overflow: TextOverflow.clip,
                     textAlign: TextAlign.right,

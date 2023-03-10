@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 import 'package:grpc_server/bloc/products/products_bloc.dart';
 import 'package:grpc_server/bloc/settings/settings_bloc.dart';
@@ -111,7 +112,7 @@ Widget ProductListItem(BuildContext context, Product product) {
         title: Row(
           children: [
             Expanded(
-              flex: 6,
+              flex: 8,
               child: Text(
                 product.name,
                 maxLines: 5,
@@ -149,19 +150,27 @@ Widget ProductListItem(BuildContext context, Product product) {
                 style: const TextStyle(fontSize: 15),
               ),
             ),
-            // const Expanded(
-            //   child: Text(
-            //     textAlign: TextAlign.center,
-            //     '455',
-            //     maxLines: 2,
-            //     softWrap: true,
-            //     style: TextStyle(fontSize: 15),
+            // Expanded(
+            //   child: SvgPicture.asset(
+            //     'assets/images/add-to-cart-svgrepo-com.svg',
+            //     width: MediaQuery.of(context).size.width * 0.025,
+            //     fit: BoxFit.contain,
+            //     color: Colors.green[800],
             //   ),
             // ),
           ],
         ),
+        trailing: GestureDetector(
+          onTap: () => _cartBloc.add(AddProduct(product)),
+          child: SvgPicture.asset(
+            'assets/images/add-to-cart-svgrepo-com.svg',
+            width: MediaQuery.of(context).size.width * 0.025,
+            fit: BoxFit.contain,
+            color: Colors.green[800],
+          ),
+        ),
         //isThreeLine: true,
-        minVerticalPadding: 20.0,
+        minVerticalPadding: 10.0,
         //dense: true,
       ),
     ),
