@@ -303,7 +303,7 @@ Widget CartProductItem(Product product) {
                     textAlign: TextAlign.left,
                     style: styleTextPrice,
                   )),
-                  Expanded(
+                  const Expanded(
                       child: Text(
                     '2 шт.',
                     maxLines: 1,
@@ -311,7 +311,7 @@ Widget CartProductItem(Product product) {
                     textAlign: TextAlign.center,
                     style: styleTextPrice,
                   )),
-                  Expanded(
+                  const Expanded(
                       child: Text(
                     '200 р.',
                     maxLines: 1,
