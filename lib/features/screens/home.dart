@@ -17,15 +17,7 @@ class HomePage extends StatelessWidget {
                     Expanded(flex: 1, child: HomeLeftPanel(context)),
                     Expanded(flex: 3, child: HomeRightPanel(context)),
                   ],
-                )
-                // Stack(
-                //   //alignment: const AlignmentDirectional(0, 0),
-                //   children: [
-                //     HomeBackgroundImage(orientation: orientation),
-                //     LeftPanel(orientation: orientation)
-                //   ],
-                // ),
-                )),
+                ))),
       );
     }));
   }
