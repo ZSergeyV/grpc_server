@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grpc_server/bloc/cart/cart_bloc.dart';
+import 'package:grpc_server/config/config.dart';
 import 'package:grpc_server/core/model/cart.dart';
 // import 'package:grpc_server/core/model/products.dart';
 
@@ -278,7 +279,7 @@ class SaleTotalWidget extends StatelessWidget {
 }
 
 Widget CartProductItem(CartItem item) {
-  const TextStyle styleTextPrice = TextStyle(fontWeight: FontWeight.w600);
+  //const TextStyle styleTextPrice = TextStyle(fontWeight: FontWeight.w600);
 
   return Padding(
     padding: const EdgeInsets.all(4.0),
@@ -291,9 +292,16 @@ Widget CartProductItem(CartItem item) {
               Row(
                 children: [
                   Expanded(
-                      child: Text(item.product.name,
-                          maxLines: 5, overflow: TextOverflow.clip)),
+                      child: Text(
+                    item.product.name,
+                    maxLines: 5,
+                    overflow: TextOverflow.clip,
+                    style: PRODUCT_TEXT_STYLE,
+                  )),
                 ],
+              ),
+              const Divider(
+                height: 15.0,
               ),
               Row(
                 children: [
@@ -303,7 +311,7 @@ Widget CartProductItem(CartItem item) {
                     maxLines: 1,
                     overflow: TextOverflow.clip,
                     textAlign: TextAlign.left,
-                    style: styleTextPrice,
+                    style: CART_TEXT_STYLE,
                   )),
                   Expanded(
                       child: Text(
@@ -311,7 +319,7 @@ Widget CartProductItem(CartItem item) {
                     maxLines: 1,
                     overflow: TextOverflow.clip,
                     textAlign: TextAlign.center,
-                    style: styleTextPrice,
+                    style: CART_TEXT_STYLE,
                   )),
                   Expanded(
                       child: Text(
@@ -319,7 +327,7 @@ Widget CartProductItem(CartItem item) {
                     maxLines: 1,
                     overflow: TextOverflow.clip,
                     textAlign: TextAlign.right,
-                    style: styleTextPrice,
+                    style: CART_TEXT_STYLE,
                   )),
                 ],
               )

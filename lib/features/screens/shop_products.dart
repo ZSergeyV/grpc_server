@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 import 'package:grpc_server/bloc/products/products_bloc.dart';
 import 'package:grpc_server/bloc/settings/settings_bloc.dart';
+import 'package:grpc_server/config/config.dart';
 import 'package:grpc_server/core/model/products.dart';
 import 'package:grpc_server/features/screens/screens.dart';
 
@@ -98,26 +99,29 @@ Widget ProductListItem(BuildContext context, Product product) {
 
   String SERVER_ADRESS = _settings.settings['SERVER_ADRESS'];
   return Padding(
-    padding: const EdgeInsets.all(2.0),
+    padding: const EdgeInsets.all(1.0),
     child: Material(
-      elevation: 2,
+      elevation: 0,
       child: ListTile(
         onTap: () => Navigator.pushNamed(context, ProductItemPageRoute,
             arguments: product),
         onLongPress: () => _cartBloc.add(AddProduct(product)),
         leading: thumb != ''
             ? Image.network(
-                'http://$SERVER_ADRESS/static/images/thumbnail/$thumb')
+                'http://$SERVER_ADRESS/static/images/thumbnail/$thumb',
+                //height: 65,
+                width: 65,
+              )
             : Image.asset('assets/images/no-image.png'),
         title: Row(
           children: [
             Expanded(
-              flex: 8,
+              flex: 7,
               child: Text(
                 product.name,
                 maxLines: 5,
                 softWrap: true,
-                style: const TextStyle(fontSize: 15),
+                style: PRODUCT_TEXT_STYLE,
               ),
             ),
             Expanded(
@@ -126,7 +130,7 @@ Widget ProductListItem(BuildContext context, Product product) {
                 '${product.price.toStringAsFixed(0)} р.',
                 maxLines: 2,
                 softWrap: true,
-                style: const TextStyle(fontSize: 15),
+                style: PRODUCT_TEXT_STYLE,
               ),
             ),
             Expanded(
@@ -135,7 +139,7 @@ Widget ProductListItem(BuildContext context, Product product) {
                 product.quantityStore.toString(),
                 maxLines: 2,
                 softWrap: true,
-                style: const TextStyle(fontSize: 15),
+                style: PRODUCT_TEXT_STYLE,
               ),
             ),
             Expanded(
@@ -147,7 +151,7 @@ Widget ProductListItem(BuildContext context, Product product) {
                         : ''),
                 maxLines: 2,
                 softWrap: true,
-                style: const TextStyle(fontSize: 15),
+                style: PRODUCT_TEXT_STYLE,
               ),
             ),
             // Expanded(
@@ -162,15 +166,21 @@ Widget ProductListItem(BuildContext context, Product product) {
         ),
         trailing: GestureDetector(
           onTap: () => _cartBloc.add(AddProduct(product)),
-          child: SvgPicture.asset(
-            'assets/images/add-to-cart-svgrepo-com.svg',
-            width: MediaQuery.of(context).size.width * 0.025,
-            fit: BoxFit.contain,
-            color: Colors.green[800],
+          child: Column(
+            children: [
+              Expanded(
+                child: SvgPicture.asset(
+                  'assets/images/add-to-cart-svgrepo-com.svg',
+                  width: 50,
+                  fit: BoxFit.contain,
+                  color: Color.fromARGB(100, 15, 110, 15),
+                ),
+              ),
+            ],
           ),
         ),
         //isThreeLine: true,
-        minVerticalPadding: 10.0,
+        minVerticalPadding: 25.0,
         //dense: true,
       ),
     ),

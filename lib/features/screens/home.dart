@@ -10,16 +10,22 @@ class HomePage extends StatelessWidget {
       return SafeArea(
         child: GestureDetector(
             child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            //alignment: const AlignmentDirectional(0, 0),
-            children: [
-              HomeBackgroundImage(orientation: orientation),
-              LeftPanel(orientation: orientation)
-            ],
-          ),
-        )),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Row(
+                  children: [
+                    Expanded(flex: 1, child: HomeLeftPanel(context)),
+                    Expanded(flex: 3, child: HomeRightPanel(context)),
+                  ],
+                )
+                // Stack(
+                //   //alignment: const AlignmentDirectional(0, 0),
+                //   children: [
+                //     HomeBackgroundImage(orientation: orientation),
+                //     LeftPanel(orientation: orientation)
+                //   ],
+                // ),
+                )),
       );
     }));
   }
