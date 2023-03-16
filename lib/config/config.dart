@@ -19,7 +19,19 @@ const TextStyle HOME_LEFT_MENU_TEXT_STYLE = TextStyle(
     fontSize: 26, fontWeight: FontWeight.w800, fontFamily: 'Montserrat');
 
 List<Map<String, dynamic>> menuItems = [
-  {'title': 'Магазин', 'actions': ShopMainPageRoute},
-  {'title': 'Мастерская', 'actions': ShopMainPageRoute},
-  {'title': 'Интернет заказы', 'actions': ShopMainPageRoute}
+  {
+    'title': 'Магазин',
+    'descriptions': 'Содержит список товаров для продажи в магазине',
+    'action': ShopMainPageRoute
+  },
+  {
+    'title': 'Мастерская',
+    'descriptions': 'Ремонт бытовой техники',
+    'action': ShopMainPageRoute
+  },
+  {
+    'title': 'Интернет заказы',
+    'descriptions': 'Служит для продажи (выдачи) интернет заказов',
+    'action': ShopMainPageRoute
+  }
 ];

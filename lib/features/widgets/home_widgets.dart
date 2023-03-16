@@ -143,16 +143,29 @@ Widget HomeRightPanel(BuildContext context) {
 }
 
 Widget HomeGridItem(BuildContext context, Map<String, dynamic> item) {
-  return Card(
-      surfaceTintColor: Colors.white,
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(22.0),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            item['title'],
-            style: TextStyle(fontSize: 30),
-          ),
-        ]),
-      ));
+  return InkWell(
+    onTap: () async {
+      Navigator.pushNamed(context, item['action'], arguments: 990);
+    },
+    child: Card(
+        surfaceTintColor: Colors.white,
+        elevation: 2,
+        child: Padding(
+          padding: const EdgeInsets.all(22.0),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              item['title'],
+              style: const TextStyle(fontSize: 30),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              item['descriptions'] ?? '',
+              style: const TextStyle(fontSize: 24),
+            ),
+          ]),
+        )),
+  );
 }
