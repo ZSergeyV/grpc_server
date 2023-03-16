@@ -75,8 +75,9 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
           price: map['price']!.toDouble() ?? 0,
           quantityStock: map['quantity_stock'] ?? 0,
           quantityStore: map['quantity_store'] ?? 0,
-          storageCell: map['storage_cell'] ?? '',
-          storageCellStock: map['storage_cell_stock'] ?? '',
+          storageCell: (map['storage_cell'] ?? '').replaceAll('\n', ''),
+          storageCellStock:
+              (map['storage_cell_stock'] ?? '').replaceAll('\n', ''),
           thumb: urlThumbImage,
         );
       }).toList();

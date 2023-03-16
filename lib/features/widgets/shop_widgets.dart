@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 import 'package:grpc_server/features/screens/screens.dart';
+import 'package:badges/badges.dart' as badges;
 
 class TopMenuShop extends StatelessWidget {
-  const TopMenuShop({super.key, required this.isCategory});
-  final bool isCategory;
+  const TopMenuShop({super.key, required this.orientation});
+  final Orientation orientation;
 
   @override
   Widget build(BuildContext context) {
+    const dividerIcon = SizedBox(width: 16);
+    final _cartBloc = context.watch<CartBloc>();
+
     return Row(
       mainAxisSize: MainAxisSize.max,
       //mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -19,24 +26,24 @@ class TopMenuShop extends StatelessWidget {
               IconButton(
                 icon: const Icon(
                   Icons.menu,
-                  size: 30,
+                  size: 32,
                 ),
                 onPressed: () async {
                   Scaffold.of(context).openDrawer();
                 },
               ),
-              const Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
-                child: Text(
-                  'Товары',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w800,
-                      fontFamily: 'Roboto'),
-                  maxLines: 1,
-                ),
-              ),
+              // const Padding(
+              //   padding: EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
+              //   child: Text(
+              //     'Товары',
+              //     textAlign: TextAlign.center,
+              //     style: TextStyle(
+              //         fontSize: 18.0,
+              //         fontWeight: FontWeight.w800,
+              //         fontFamily: 'Roboto'),
+              //     maxLines: 1,
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -45,50 +52,82 @@ class TopMenuShop extends StatelessWidget {
         //width: double.infinity,
         // child:
         Expanded(
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                icon: const Icon(
-                  Icons.search_outlined,
-                  size: 30,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.search_outlined,
+                    size: 34,
+                  ),
+                  onPressed: () {
+                    showSearch(
+                        context: context,
+                        delegate: AppSearchDelegate(),
+                        useRootNavigator: true);
+                  },
                 ),
-                onPressed: () {
-                  showSearch(
-                      context: context,
-                      delegate: AppSearchDelegate(),
-                      useRootNavigator: true);
-                },
-              ),
-              IconButton(
-                icon: const Icon(
-                  Icons.view_module,
-                  size: 30,
+                //dividerIcon,
+                IconButton(
+                  icon: const Icon(
+                    Icons.view_module,
+                    size: 34,
+                  ),
+                  onPressed: () {
+                    print('IconButton pressed ...');
+                  },
                 ),
-                onPressed: () {
-                  print('IconButton pressed ...');
-                },
-              ),
-              // IconButton(
-              //   icon: const Icon(
-              //     Icons.view_list_rounded,
-              //     size: 30,
-              //   ),
-              //   onPressed: () {
-              //     print('IconButton pressed ...');
-              //   },
-              // ),
-              IconButton(
-                icon: const Icon(
-                  Icons.favorite_border,
-                  size: 30,
+                //dividerIcon,
+                // IconButton(
+                //   icon: const Icon(
+                //     Icons.view_list_rounded,
+                //     size: 30,
+                //   ),
+                //   onPressed: () {
+                //     print('IconButton pressed ...');
+                //   },
+                // ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.favorite_border,
+                    size: 34,
+                  ),
+                  onPressed: () {
+                    print('IconButton pressed ...');
+                  },
                 ),
-                onPressed: () {
-                  print('IconButton pressed ...');
-                },
-              ),
-            ],
+                orientation == Orientation.portrait
+                    ? dividerIcon
+                    : const SizedBox(),
+                orientation == Orientation.portrait
+                    ? badges.Badge(
+                        position:
+                            badges.BadgePosition.topEnd(top: -15, end: -10),
+                        showBadge: true,
+                        ignorePointer: false,
+                        badgeStyle:
+                            badges.BadgeStyle(padding: EdgeInsets.all(10)),
+                        badgeContent: Text(
+                          '${_cartBloc.state.totalCount}',
+                          style: const TextStyle(
+                              fontSize: 20, color: Colors.white),
+                        ),
+                        //padding: EdgeInsetsGeometry.lerp(a, b, t),
+                        child: SvgPicture.asset(
+                          'assets/images/2703080_cart_basket_ecommerce_shop_icon.svg',
+                          fit: BoxFit.contain,
+                          height: 42,
+                          width: 42,
+                          color: Color.fromARGB(248, 78, 78, 78),
+                        ),
+                      )
+                    : const SizedBox(),
+                // )
+              ],
+            ),
           ),
         ),
         //),

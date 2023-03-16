@@ -19,7 +19,6 @@ class MainShopPage extends StatelessWidget {
             ? true
             : false;
     final LocalStoreSettings localStore = LocalStoreSettings();
-    // final _bloc = context.read<CategoriesBloc>();
     return Scaffold(
         backgroundColor: const Color(0xFFC9C9C9),
         // drawer: const LeftMenuShop(),
@@ -58,14 +57,10 @@ class MainShopPage extends StatelessWidget {
                                           ? 0.99
                                           : 0.7),
                                   height: 60,
-                                  child: TopMenuShop(isCategory: isCategory),
+                                  child: TopMenuShop(orientation: orientation),
                                 ),
                                 Expanded(
-                                  child:
-                                      // isCategory
-                                      //     ? ListCategories(orientation: orientation)
-                                      // :
-                                      ListProducts(orientation: orientation),
+                                  child: ListProducts(orientation: orientation),
                                 ),
                               ],
                             ),
@@ -75,9 +70,6 @@ class MainShopPage extends StatelessWidget {
                               : const Cart(),
                         ],
                       ),
-                    ))
-            // }),
-            // )
-            ));
+                    ))));
   }
 }

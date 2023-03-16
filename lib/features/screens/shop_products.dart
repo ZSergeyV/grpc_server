@@ -106,13 +106,23 @@ Widget ProductListItem(BuildContext context, Product product) {
         onTap: () => Navigator.pushNamed(context, ProductItemPageRoute,
             arguments: product),
         onLongPress: () => _cartBloc.add(AddProduct(product)),
-        leading: thumb != ''
-            ? Image.network(product.thumb, width: 65)
-            : Image.asset('assets/images/no-image.png'),
+        leading: Column(
+          children: [
+            Expanded(
+              child: thumb != ''
+                  ? Image.network(
+                      product.thumb,
+                      width: 65,
+                    )
+                  : Image.asset('assets/images/no-image.png'),
+            ),
+          ],
+        ),
+
         title: Row(
           children: [
             Expanded(
-              flex: 7,
+              flex: 5,
               child: Text(
                 product.name,
                 maxLines: 5,
@@ -139,15 +149,19 @@ Widget ProductListItem(BuildContext context, Product product) {
               ),
             ),
             Expanded(
-              child: Text(
-                textAlign: TextAlign.center,
-                product.storageCell +
-                    (product.storageCellStock != ''
-                        ? '\n (${product.storageCellStock})'
-                        : ''),
-                maxLines: 2,
-                softWrap: true,
-                style: PRODUCT_TEXT_STYLE,
+              child: Column(
+                children: [
+                  Text(
+                    textAlign: TextAlign.center,
+                    product.storageCell +
+                        (product.storageCellStock != ''
+                            ? '\n(${product.storageCellStock})'
+                            : ''),
+                    maxLines: 2,
+                    softWrap: true,
+                    style: PRODUCT_TEXT_STYLE,
+                  ),
+                ],
               ),
             ),
             // Expanded(
@@ -167,16 +181,16 @@ Widget ProductListItem(BuildContext context, Product product) {
               Expanded(
                 child: SvgPicture.asset(
                   'assets/images/add-to-cart-svgrepo-com.svg',
-                  width: 50,
+                  width: 42,
                   fit: BoxFit.contain,
-                  color: Color.fromARGB(100, 15, 110, 15),
+                  color: Color.fromARGB(123, 15, 110, 15),
                 ),
               ),
             ],
           ),
         ),
         //isThreeLine: true,
-        minVerticalPadding: 25.0,
+        minVerticalPadding: 8.0,
         //dense: true,
       ),
     ),
