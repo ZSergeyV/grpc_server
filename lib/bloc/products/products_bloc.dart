@@ -65,6 +65,9 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       final body = json.decode(response.body) as List;
       return body.map((dynamic json) {
         final map = json as Map<String, dynamic>;
+        final urlThumbImage = map['thumb'] != ''
+            ? 'http://$SERVER_ADRESS/static/images/thumbnail/${map['thumb']}'
+            : '';
         return Product(
           code: map['Code'] ?? 0,
           idCategory: igCategory,
@@ -74,7 +77,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
           quantityStore: map['quantity_store'] ?? 0,
           storageCell: map['storage_cell'] ?? '',
           storageCellStock: map['storage_cell_stock'] ?? '',
-          thumb: map['thumb'] ?? '',
+          thumb: urlThumbImage,
         );
       }).toList();
     }

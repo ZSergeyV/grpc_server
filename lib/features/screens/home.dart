@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grpc_server/bloc/cart/cart_bloc.dart';
-import 'package:grpc_server/bloc/categories/categories_bloc.dart';
+// import 'package:grpc_server/bloc/cart/cart_bloc.dart';
+// import 'package:grpc_server/bloc/categories/categories_bloc.dart';
 // import 'package:grpc_server/bloc/products/products_bloc.dart';
 import 'package:grpc_server/bloc/settings/settings_bloc.dart';
 import 'package:grpc_server/features/widgets/home_widgets.dart';
 import 'package:grpc_server/resources/local_store.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -14,7 +14,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LocalStoreSettings localStore = LocalStoreSettings();
-    bool isCategory = false;
+    // bool isCategory = false;
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 250, 250, 250),
         body: MultiBlocProvider(

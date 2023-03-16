@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 import 'package:grpc_server/bloc/products/products_bloc.dart';
-import 'package:grpc_server/bloc/settings/settings_bloc.dart';
+// import 'package:grpc_server/bloc/settings/settings_bloc.dart';
 import 'package:grpc_server/config/config.dart';
 import 'package:grpc_server/core/model/products.dart';
 import 'package:grpc_server/features/screens/screens.dart';
@@ -94,10 +94,10 @@ class _ListProductsState extends State<ListProducts> {
 
 Widget ProductListItem(BuildContext context, Product product) {
   final thumb = product.thumb;
-  final SettingState _settings = context.watch<SettingBloc>().state;
+  // final SettingState _settings = context.watch<SettingBloc>().state;
   final _cartBloc = context.read<CartBloc>();
 
-  String SERVER_ADRESS = _settings.settings['SERVER_ADRESS'];
+  // String SERVER_ADRESS = _settings.settings['SERVER_ADRESS'];
   return Padding(
     padding: const EdgeInsets.all(1.0),
     child: Material(
@@ -107,11 +107,7 @@ Widget ProductListItem(BuildContext context, Product product) {
             arguments: product),
         onLongPress: () => _cartBloc.add(AddProduct(product)),
         leading: thumb != ''
-            ? Image.network(
-                'http://$SERVER_ADRESS/static/images/thumbnail/$thumb',
-                //height: 65,
-                width: 65,
-              )
+            ? Image.network(product.thumb, width: 65)
             : Image.asset('assets/images/no-image.png'),
         title: Row(
           children: [

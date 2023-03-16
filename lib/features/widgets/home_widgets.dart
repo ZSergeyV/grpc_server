@@ -145,7 +145,7 @@ Widget HomeRightPanel(BuildContext context) {
 Widget HomeGridItem(BuildContext context, Map<String, dynamic> item) {
   return InkWell(
     onTap: () async {
-      Navigator.pushNamed(context, item['action'], arguments: 990);
+      Navigator.pushNamed(context, item['action'], arguments: 800);
     },
     child: Card(
         surfaceTintColor: Colors.white,
