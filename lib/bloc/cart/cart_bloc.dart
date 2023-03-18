@@ -49,27 +49,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         items: items,
         totalCount: items.length,
         totalPrice: totalPrice));
-
-    // try {
-    //   if (state.status == ProductsStatus.initial) {
-    //     final products = await _fetchProducts(event.idCategory, productLenght);
-    //     return emit(state.copyWith(
-    //       status: ProductsStatus.success,
-    //       products: products,
-    //       hasReachedMax: false,
-    //     ));
-    //   }
-    //   final products = await _fetchProducts(event.idCategory, productLenght);
-    //   emit(products.isEmpty
-    //       ? state.copyWith(hasReachedMax: true)
-    //       : state.copyWith(
-    //           status: ProductsStatus.success,
-    //           products: List.of(state.products)..addAll(products),
-    //           hasReachedMax: false,
-    //         ));
-    // } catch (_) {
-    //   emit(state.copyWith(status: ProductsStatus.failure));
-    // }
   }
 
   Future<void> _onDeleteCartProduct(

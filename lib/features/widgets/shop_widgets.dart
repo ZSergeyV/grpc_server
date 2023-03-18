@@ -104,6 +104,8 @@ class TopMenuShop extends StatelessWidget {
                     : const SizedBox(),
                 orientation == Orientation.portrait
                     ? badges.Badge(
+                        onTap: () =>
+                            Navigator.pushNamed(context, CartPageRoute),
                         position:
                             badges.BadgePosition.topEnd(top: -15, end: -10),
                         showBadge: true,

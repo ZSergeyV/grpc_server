@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 import 'package:grpc_server/config/config.dart';
 import 'package:grpc_server/core/model/cart.dart';
-// import 'package:grpc_server/core/model/products.dart';
 
 class Cart extends StatelessWidget {
   const Cart({super.key});

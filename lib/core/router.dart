@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grpc_server/features/screens/screens.dart';
+import 'package:grpc_server/features/screens/settings.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -17,6 +18,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) => const ProductPage());
+    case CartPageRoute:
+      return MaterialPageRoute(
+          settings: settings, builder: (BuildContext context) => const Cart());
     case SettingsPageRoute:
       return MaterialPageRoute(builder: (context) => const SettingsPage());
     default:
