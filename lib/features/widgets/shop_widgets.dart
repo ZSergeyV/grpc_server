@@ -12,7 +12,7 @@ class TopMenuShop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const dividerIcon = SizedBox(width: 16);
-    final _cartBloc = context.watch<CartBloc>();
+    // final _cartBloc = context.watch<CartBloc>();
 
     return Row(
       mainAxisSize: MainAxisSize.max,
@@ -116,7 +116,7 @@ class TopMenuShop extends StatelessWidget {
                           badgeStyle: const badges.BadgeStyle(
                               padding: EdgeInsets.all(10)),
                           badgeContent: Text(
-                            '${_cartBloc.state.totalCount}',
+                            '{_cartBloc.state.totalCount}',
                             style: const TextStyle(
                                 fontSize: 20, color: Colors.white),
                           ),

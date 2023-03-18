@@ -30,11 +30,11 @@ class _ListProductsState extends State<ListProducts> {
     _scrollController
       ..removeListener(_onScroll)
       ..dispose();
-    super.dispose();
+    // super.dispose();
   }
 
   void _onScroll() {
-    final _bloc = context.read<ProductsBloc>();
+    final _bloc = context.watch<ProductsBloc>();
     if (_isBottom) {
       final int idCategory = _bloc.state.products[0].idCategory;
       _bloc.add(ProductsFetched(idCategory, _bloc.state.products.length));

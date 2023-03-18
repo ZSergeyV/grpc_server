@@ -12,6 +12,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<AddProduct>(_onAddCartProduct);
     on<DeleteProduct>(_onDeleteCartProduct);
     on<ClearProduct>(_onClearCart);
+
+    // CartBloc cartBloc = CartBloc();
   }
 
   Future<void> _onAddCartProduct(
@@ -67,7 +69,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       result['isCart'] = true;
       result['count'] = resultFound.first.count;
     }
-    ;
     return result;
   }
 }

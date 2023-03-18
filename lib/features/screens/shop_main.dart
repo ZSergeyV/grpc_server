@@ -24,8 +24,6 @@ class MainShopPage extends StatelessWidget {
         // drawer: const LeftMenuShop(),
         body: MultiBlocProvider(
             providers: [
-              BlocProvider<CartBloc>(
-                  lazy: false, create: (BuildContext context) => CartBloc()),
               BlocProvider<CategoriesBloc>(
                   lazy: false,
                   create: (BuildContext context) => CategoriesBloc(

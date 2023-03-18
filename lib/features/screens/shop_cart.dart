@@ -6,13 +6,14 @@ import 'package:grpc_server/config/config.dart';
 import 'package:grpc_server/core/model/cart.dart';
 
 class CartPage extends StatelessWidget {
-  const CartPage({required this.blocContext, super.key});
+  const CartPage({super.key}); //required this.blocContext,
 
-  final BuildContext blocContext;
+  //final BuildContext blocContext;
 
   @override
   Widget build(BuildContext context) {
-    final cartBloc = blocContext.watch<CartBloc>();
+    // final cartBloc = blocContext.watch<CartBloc>();
+    final cartBloc = context.watch<CartBloc>();
     return BlocProvider<CartBloc>(
         create: (blocContext) => cartBloc,
         child: Scaffold(
@@ -32,21 +33,21 @@ class CartPage extends StatelessWidget {
                   ))
             ],
           ),
-          body: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+          body: BlocBuilder<CartBloc, CartState>(builder: (blocContext, state) {
             return SafeArea(
               child: Column(
                 children: [
                   Expanded(
                       child: Padding(
                           padding: const EdgeInsets.all(12),
-                          child: Builder(builder: (blocContext) {
-                            switch (cartBloc.state.status) {
+                          child: Builder(builder: (context) {
+                            switch (state.status) {
                               case CartStatus.initial:
                                 return ListView.builder(
                                   itemBuilder:
-                                      (BuildContext blocContext, int index) {
-                                    return Text(cartBloc
-                                        .state.items[index].product.name);
+                                      (BuildContext context, int index) {
+                                    return Text(
+                                        state.items[index].product.name);
                                   },
                                   itemCount: cartBloc.state.items.length,
                                 );
