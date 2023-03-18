@@ -102,31 +102,35 @@ class TopMenuShop extends StatelessWidget {
                 orientation == Orientation.portrait
                     ? dividerIcon
                     : const SizedBox(),
-                orientation == Orientation.portrait
-                    ? badges.Badge(
-                        onTap: () =>
-                            Navigator.pushNamed(context, CartPageRoute),
-                        position:
-                            badges.BadgePosition.topEnd(top: -15, end: -10),
-                        showBadge: true,
-                        ignorePointer: false,
-                        badgeStyle: const badges.BadgeStyle(
-                            padding: EdgeInsets.all(10)),
-                        badgeContent: Text(
-                          '${_cartBloc.state.totalCount}',
-                          style: const TextStyle(
-                              fontSize: 20, color: Colors.white),
-                        ),
-                        //padding: EdgeInsetsGeometry.lerp(a, b, t),
-                        child: SvgPicture.asset(
-                          'assets/images/2703080_cart_basket_ecommerce_shop_icon.svg',
-                          fit: BoxFit.contain,
-                          height: 42,
-                          width: 42,
-                          color: const Color.fromARGB(248, 78, 78, 78),
-                        ),
-                      )
-                    : const SizedBox(),
+                InkWell(
+                  onTap: () => Navigator.pushNamed(context, CartPageRoute,
+                      arguments: context),
+                  child: orientation == Orientation.portrait
+                      ? badges.Badge(
+                          // onTap: () =>
+                          //     Navigator.pushNamed(context, CartPageRoute),
+                          position:
+                              badges.BadgePosition.topEnd(top: -15, end: -10),
+                          showBadge: true,
+                          ignorePointer: false,
+                          badgeStyle: const badges.BadgeStyle(
+                              padding: EdgeInsets.all(10)),
+                          badgeContent: Text(
+                            '${_cartBloc.state.totalCount}',
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.white),
+                          ),
+                          //padding: EdgeInsetsGeometry.lerp(a, b, t),
+                          child: SvgPicture.asset(
+                            'assets/images/2703080_cart_basket_ecommerce_shop_icon.svg',
+                            fit: BoxFit.contain,
+                            height: 42,
+                            width: 42,
+                            color: const Color.fromARGB(248, 78, 78, 78),
+                          ),
+                        )
+                      : const SizedBox(),
+                ),
                 // )
               ],
             ),

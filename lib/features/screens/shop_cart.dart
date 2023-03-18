@@ -5,6 +5,70 @@ import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 import 'package:grpc_server/config/config.dart';
 import 'package:grpc_server/core/model/cart.dart';
 
+class CartPage extends StatelessWidget {
+  const CartPage({required this.blocContext, super.key});
+
+  final BuildContext blocContext;
+
+  @override
+  Widget build(BuildContext context) {
+    final cartBloc = blocContext.watch<CartBloc>();
+    // final userBloc = BlocProvider.of<CartBloc>(blocContext);
+    // return BlocBuilder<CartBloc, CartState>(builder: (blocContext, state) {
+    return BlocProvider<CartBloc>(
+        create: (blocContext) => cartBloc,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              'Корзина',
+              style: TextStyle(fontSize: 24),
+            ),
+            elevation: 3,
+            actions: [
+              IconButton(
+                  onPressed: () => cartBloc.add(ClearProduct()),
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Color(0xFFE83333),
+                    size: 30,
+                  ))
+            ],
+          ),
+          body: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+            return SafeArea(
+              child: Column(
+                children: [
+                  Expanded(
+                      child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Builder(builder: (context) {
+                            switch (cartBloc.state.status) {
+                              case CartStatus.initial:
+                                return ListView.builder(
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Text(cartBloc
+                                        .state.items[index].product.name);
+                                  },
+                                  itemCount: cartBloc.state.items.length,
+                                );
+                              default:
+                                return const SizedBox();
+                            }
+                          }))),
+                  Container(
+                    height: 60,
+                    color: Colors.red,
+                  )
+                ],
+              ),
+            );
+          }),
+        ));
+    // });
+  }
+}
+
 class Cart extends StatelessWidget {
   const Cart({super.key});
 

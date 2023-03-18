@@ -20,7 +20,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           builder: (BuildContext context) => const ProductPage());
     case CartPageRoute:
       return MaterialPageRoute(
-          settings: settings, builder: (BuildContext context) => const Cart());
+          settings: settings,
+          builder: (BuildContext context) => CartPage(
+                blocContext: settings.arguments as BuildContext,
+              ));
     case SettingsPageRoute:
       return MaterialPageRoute(builder: (context) => const SettingsPage());
     default:
