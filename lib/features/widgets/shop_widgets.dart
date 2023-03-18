@@ -108,8 +108,8 @@ class TopMenuShop extends StatelessWidget {
                             badges.BadgePosition.topEnd(top: -15, end: -10),
                         showBadge: true,
                         ignorePointer: false,
-                        badgeStyle:
-                            badges.BadgeStyle(padding: EdgeInsets.all(10)),
+                        badgeStyle: const badges.BadgeStyle(
+                            padding: EdgeInsets.all(10)),
                         badgeContent: Text(
                           '${_cartBloc.state.totalCount}',
                           style: const TextStyle(
@@ -121,7 +121,7 @@ class TopMenuShop extends StatelessWidget {
                           fit: BoxFit.contain,
                           height: 42,
                           width: 42,
-                          color: Color.fromARGB(248, 78, 78, 78),
+                          color: const Color.fromARGB(248, 78, 78, 78),
                         ),
                       )
                     : const SizedBox(),
