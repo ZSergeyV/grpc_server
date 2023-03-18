@@ -79,4 +79,16 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     return emit(state.copyWith(
         status: CartStatus.initial, items: [], totalCount: 0, totalPrice: 0));
   }
+
+  Map<String, dynamic> productInCart(Product product) {
+    Map<String, dynamic> result = {'isCart': false};
+    final resultFound =
+        state.items.where((element) => element.product == product);
+    if (resultFound.isNotEmpty) {
+      result['isCart'] = true;
+      result['count'] = resultFound.first.count;
+    }
+    ;
+    return result;
+  }
 }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 import 'package:grpc_server/bloc/products/products_bloc.dart';
-// import 'package:grpc_server/bloc/settings/settings_bloc.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:grpc_server/config/config.dart';
 import 'package:grpc_server/core/model/products.dart';
 import 'package:grpc_server/features/screens/screens.dart';
@@ -94,10 +94,8 @@ class _ListProductsState extends State<ListProducts> {
 
 Widget ProductListItem(BuildContext context, Product product) {
   final thumb = product.thumb;
-  // final SettingState _settings = context.watch<SettingBloc>().state;
-  final _cartBloc = context.read<CartBloc>();
-
-  // String SERVER_ADRESS = _settings.settings['SERVER_ADRESS'];
+  var _cartBloc = context.watch<CartBloc>();
+  final itemInCart = _cartBloc.productInCart(product);
   return Padding(
     padding: const EdgeInsets.all(1.0),
     child: Material(
@@ -177,15 +175,27 @@ Widget ProductListItem(BuildContext context, Product product) {
         trailing: GestureDetector(
           onTap: () => _cartBloc.add(AddProduct(product)),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: SvgPicture.asset(
-                  'assets/images/add-to-cart-svgrepo-com.svg',
-                  width: 42,
-                  fit: BoxFit.contain,
-                  color: Color.fromARGB(123, 15, 110, 15),
-                ),
-              ),
+              // Expanded(
+              // child:
+              badges.Badge(
+                  ignorePointer: false,
+                  showBadge: itemInCart['isCart'],
+                  badgeAnimation: const badges.BadgeAnimation.rotation(),
+                  badgeStyle: const badges.BadgeStyle(
+                      padding: EdgeInsets.all(8), elevation: 2),
+                  badgeContent: Text(
+                    '${itemInCart['isCart'] ? itemInCart['count'] : 0}',
+                    style: const TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                  child: SvgPicture.asset(
+                    'assets/images/add-to-cart-svgrepo-com.svg',
+                    width: 42,
+                    fit: BoxFit.contain,
+                    color: const Color.fromARGB(123, 15, 110, 15),
+                  )),
+              // ),
             ],
           ),
         ),
