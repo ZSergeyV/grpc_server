@@ -58,7 +58,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   Future<void> _onClearCart(ClearProduct event, Emitter<CartState> emit) async {
     return emit(state.copyWith(
-        status: CartStatus.initial, items: [], totalCount: 0, totalPrice: 0));
+        status: CartStatus.empty, items: [], totalCount: 0, totalPrice: 0));
   }
 
   Map<String, dynamic> productInCart(Product product) {

@@ -1,6 +1,6 @@
 part of 'cart_bloc.dart';
 
-enum CartStatus { initial, success, error, pay, clear, cancel }
+enum CartStatus { initial, success, error, pay, empty, cancel }
 
 class CartState extends Equatable {
   const CartState({

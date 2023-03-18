@@ -103,8 +103,8 @@ class TopMenuShop extends StatelessWidget {
                     ? dividerIcon
                     : const SizedBox(),
                 InkWell(
-                  onTap: () => Navigator.pushNamed(context, CartPageRoute,
-                      arguments: context),
+                  onTap: () => Navigator.pushNamed(context, CartPageRoute),
+                  // arguments: context),
                   child: orientation == Orientation.portrait
                       ? badges.Badge(
                           // onTap: () =>
@@ -116,7 +116,7 @@ class TopMenuShop extends StatelessWidget {
                           badgeStyle: const badges.BadgeStyle(
                               padding: EdgeInsets.all(10)),
                           badgeContent: Text(
-                            '{_cartBloc.state.totalCount}',
+                            '${context.watch<CartBloc>().state.totalCount}',
                             style: const TextStyle(
                                 fontSize: 20, color: Colors.white),
                           ),

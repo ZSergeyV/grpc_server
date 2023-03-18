@@ -18,6 +18,7 @@ class ListProducts extends StatefulWidget {
 
 class _ListProductsState extends State<ListProducts> {
   final _scrollController = ScrollController();
+  late ProductsBloc _bloc;
 
   @override
   void initState() {
@@ -30,11 +31,11 @@ class _ListProductsState extends State<ListProducts> {
     _scrollController
       ..removeListener(_onScroll)
       ..dispose();
-    // super.dispose();
+    super.dispose();
   }
 
   void _onScroll() {
-    final _bloc = context.watch<ProductsBloc>();
+    final _bloc = context.read<ProductsBloc>();
     if (_isBottom) {
       final int idCategory = _bloc.state.products[0].idCategory;
       _bloc.add(ProductsFetched(idCategory, _bloc.state.products.length));

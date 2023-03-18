@@ -13,57 +13,60 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final cartBloc = blocContext.watch<CartBloc>();
-    final cartBloc = context.watch<CartBloc>();
-    return BlocProvider<CartBloc>(
-        create: (blocContext) => cartBloc,
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text(
-              'Корзина',
-              style: TextStyle(fontSize: 24),
-            ),
-            elevation: 3,
-            actions: [
-              IconButton(
-                  onPressed: () => cartBloc.add(ClearProduct()),
-                  icon: const Icon(
-                    Icons.delete_outline,
-                    color: Color(0xFFE83333),
-                    size: 30,
-                  ))
+    // final cartBloc = context.read<CartBloc>();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Корзина',
+          style: TextStyle(fontSize: 24),
+        ),
+        elevation: 3,
+        actions: [
+          IconButton(
+              onPressed: () => _showDialogClearCart(context),
+              icon: const Icon(
+                Icons.delete_outline,
+                color: Color(0xFFE83333),
+                size: 30,
+              ))
+        ],
+      ),
+      body: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+        return SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                  child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Builder(builder: (context) {
+                        switch (state.status) {
+                          case CartStatus.initial:
+                            return ListView.builder(
+                              itemBuilder: (BuildContext context, int index) {
+                                return Text(state.items[index].product.name);
+                              },
+                              itemCount: state.items.length,
+                            );
+                          case CartStatus.empty:
+                            return const Center(
+                                child: Text(
+                              'Корзина пуста',
+                              style: TextStyle(fontSize: 24),
+                            ));
+                          default:
+                            return const SizedBox();
+                        }
+                      }))),
+              Container(
+                height: 60,
+                color: Colors.red,
+              )
             ],
           ),
-          body: BlocBuilder<CartBloc, CartState>(builder: (blocContext, state) {
-            return SafeArea(
-              child: Column(
-                children: [
-                  Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Builder(builder: (context) {
-                            switch (state.status) {
-                              case CartStatus.initial:
-                                return ListView.builder(
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Text(
-                                        state.items[index].product.name);
-                                  },
-                                  itemCount: cartBloc.state.items.length,
-                                );
-                              default:
-                                return const SizedBox();
-                            }
-                          }))),
-                  Container(
-                    height: 60,
-                    color: Colors.red,
-                  )
-                ],
-              ),
-            );
-          }),
-        ));
+        );
+      }),
+      // )
+    );
     // });
   }
 }
@@ -120,9 +123,12 @@ class Cart extends StatelessWidget {
                             case CartStatus.pay:
                               // TODO: Handle this case.
                               break;
-                            case CartStatus.clear:
-                              // TODO: Handle this case.
-                              break;
+                            case CartStatus.empty:
+                              return const Center(
+                                  child: Text(
+                                'Корзина пуста',
+                                style: TextStyle(fontSize: 24),
+                              ));
                             case CartStatus.cancel:
                               // TODO: Handle this case.
                               break;
@@ -135,7 +141,7 @@ class Cart extends StatelessWidget {
                             'assets/images/2703080_cart_basket_ecommerce_shop_icon.svg',
                             width: MediaQuery.of(context).size.width * 0.1,
                             fit: BoxFit.cover,
-                            color: Colors.black12,
+                            color: const Color.fromARGB(12, 0, 0, 0),
                           ),
                         ),
                       ],
@@ -180,44 +186,6 @@ class CartTopWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final _cartBloc = context.read<CartBloc>();
 
-    Future<void> _showDialogClearCart() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            // <-- SEE HERE
-            title: const Text('Очистка корзины'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: const <Widget>[
-                  Text('Вы уверены что хотите очистить корзину?'),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Нет'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: const Text(
-                  'Да',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                onPressed: () {
-                  _cartBloc.add(ClearProduct());
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
     return Container(
       width: MediaQuery.of(context).size.width * 0.29,
       height: 65,
@@ -231,9 +199,7 @@ class CartTopWidget extends StatelessWidget {
               bottom: BorderSide(
                 color: Color.fromARGB(255, 143, 143, 143),
                 width: 1.0,
-              ))
-          // color: FlutterFlowTheme.of(context).checkListProduct,
-          ),
+              ))),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -263,7 +229,7 @@ class CartTopWidget extends StatelessWidget {
               size: 30,
             ),
             onPressed: () {
-              _showDialogClearCart();
+              _showDialogClearCart(context);
             },
           ),
         ],
@@ -341,8 +307,6 @@ class SaleTotalWidget extends StatelessWidget {
 }
 
 Widget CartProductItem(CartItem item) {
-  //const TextStyle styleTextPrice = TextStyle(fontWeight: FontWeight.w600);
-
   return Padding(
     padding: const EdgeInsets.all(4.0),
     child: Material(
@@ -396,5 +360,57 @@ Widget CartProductItem(CartItem item) {
             ],
           ),
         )),
+  );
+}
+
+Future<void> _showDialogClearCart(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      ButtonStyle actionButtonStyle = ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10))));
+      return AlertDialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        // <-- SEE HERE
+        title: const Text('Очистка корзины'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: const <Widget>[
+              Text(
+                'Вы уверены что хотите очистить корзину?',
+                style: TextStyle(fontSize: 24),
+              ),
+            ],
+          ),
+        ),
+        actionsOverflowButtonSpacing: 10,
+        actions: <Widget>[
+          ElevatedButton(
+            style: actionButtonStyle.copyWith(
+                backgroundColor: MaterialStateProperty.all(Colors.red)),
+            child: const Text('Нет'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          ElevatedButton(
+            style: actionButtonStyle.copyWith(
+                backgroundColor: MaterialStateProperty.all(Colors.blue)),
+            child: const Text(
+              'Да',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            onPressed: () {
+              context.read<CartBloc>().add(ClearProduct());
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
   );
 }
