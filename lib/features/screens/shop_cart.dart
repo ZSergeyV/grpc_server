@@ -13,8 +13,6 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartBloc = blocContext.watch<CartBloc>();
-    // final userBloc = BlocProvider.of<CartBloc>(blocContext);
-    // return BlocBuilder<CartBloc, CartState>(builder: (blocContext, state) {
     return BlocProvider<CartBloc>(
         create: (blocContext) => cartBloc,
         child: Scaffold(
@@ -41,12 +39,12 @@ class CartPage extends StatelessWidget {
                   Expanded(
                       child: Padding(
                           padding: const EdgeInsets.all(12),
-                          child: Builder(builder: (context) {
+                          child: Builder(builder: (blocContext) {
                             switch (cartBloc.state.status) {
                               case CartStatus.initial:
                                 return ListView.builder(
                                   itemBuilder:
-                                      (BuildContext context, int index) {
+                                      (BuildContext blocContext, int index) {
                                     return Text(cartBloc
                                         .state.items[index].product.name);
                                   },
