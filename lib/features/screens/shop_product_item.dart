@@ -15,36 +15,6 @@ class ProductPage extends StatelessWidget {
     final Product _product =
         ModalRoute.of(context)!.settings.arguments as Product;
 
-    late Map<String, dynamic> productInfo;
-
-    Future<Map<String, dynamic>> _fetchProductInfo(int code) async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String serverAdress = prefs.getString('SERVER_ADRESS') ?? '';
-      //int limitProduct = prefs.getInt('LIMIT_PRODUCT') ?? 0;
-
-      final response = await http.get(
-        Uri.http(
-          serverAdress,
-          '/api/v1/product',
-          <String, String>{
-            'code': code.toString(),
-          },
-        ),
-      );
-
-      if (response.statusCode == 200) {
-        final body = json.decode(response.body);
-        return body;
-      }
-      throw Exception('Ошибка получения данных товара');
-    }
-
-    Future<void> getInfo(int code) async {
-      productInfo = await _fetchProductInfo(code);
-    }
-
-    getInfo(_product.code);
-
     return Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 97, 97, 97),
@@ -55,86 +25,87 @@ class ProductPage extends StatelessWidget {
             style: const TextStyle(color: Colors.white),
           ),
         ),
-        body: OrientationBuilder(
-            builder: (context, orientation) => SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: orientation == Orientation.landscape
-                        ? Row(
-                            // mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                  flex: 1,
-                                  child: ImageSliderProduct(paths: [])),
-                              Expanded(
-                                flex: 2,
-                                child: Column(
-                                  children: [
-                                    ProductInfo(context, _product),
-                                  ],
-                                ),
-                              )
-                            ],
-                          )
-                        : Column(
-                            children: [
-                              ImageSliderProduct(paths: []),
-                              ProductInfo(context, _product)
-                            ],
+        body: FutureBuilder<Map<String, dynamic>>(
+            future: _fetchProductInfo(_product.code),
+            builder:
+                (context, AsyncSnapshot<Map<String, dynamic>> productInfo) {
+              if (productInfo.hasData) {
+                final List<dynamic> listImages = productInfo.data!['images'];
+                return OrientationBuilder(
+                    builder: (context, orientation) => SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: orientation == Orientation.landscape
+                                ? Row(
+                                    // mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                          flex: 1,
+                                          child: ImageSliderProduct(
+                                              paths: listImages)),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Column(
+                                          children: [
+                                            ProductInfo(context, _product),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                : Column(
+                                    children: [
+                                      ImageSliderProduct(paths: listImages),
+                                      ProductInfo(context, _product)
+                                    ],
+                                  ),
                           ),
-                  ),
-                )));
+                        ));
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            }));
   }
 }
 
 class ImageSliderProduct extends StatelessWidget {
   ImageSliderProduct({super.key, required this.paths});
-  final List<String> paths;
+  final List<dynamic> paths;
   List _imgProduct = [];
 
-  Future<void> _getImages(List<String> paths) async {
-    for (String path in paths) {
-      final data = await _fetchImage(path);
-      _imgProduct = data['images'] ?? [];
-    }
-  }
+  // Future<void> _getImages(List<dynamic> paths) async {
+  //   for (String path in paths) {
+  //     final data = await _fetchImage(path);
+  //     _imgProduct = data['images'] ?? [];
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
-    _getImages(paths);
     return CarouselSlider(
       options: CarouselOptions(),
-      items: _imgProduct
-          .map((item) => Container(
-                margin: const EdgeInsets.only(left: 8, right: 8, top: 0),
-                child: Center(child: Image.network(item, fit: BoxFit.cover)),
-              ))
+      items: paths
+          .map((item) => FutureBuilder<Image>(
+                  future: _fetchImage(item),
+                  builder: (context, AsyncSnapshot<Image> snapshot) {
+                    if (snapshot.hasData) {
+                      return snapshot.data!;
+                    } else {
+                      return const SizedBox();
+                    }
+                  })
+
+              // Container(
+              //       margin: const EdgeInsets.only(left: 8, right: 8, top: 0),
+              //       child: Center(child: Image.network(item, fit: BoxFit.cover)),
+              //     )
+
+              )
           .toList(),
     );
   }
-}
-
-Future<Map<String, dynamic>> _fetchImage(String path) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String serverAdress = prefs.getString('SERVER_ADRESS') ?? '';
-  //int limitProduct = prefs.getInt('LIMIT_PRODUCT') ?? 0;
-
-  final response = await http.get(
-    Uri.http(
-      serverAdress,
-      '/api/v1/get-image',
-      <String, String>{
-        'path': path,
-      },
-    ),
-  );
-
-  if (response.statusCode == 200) {
-    final body = json.decode(response.body);
-    return body;
-  }
-  throw Exception('Ошибка получения данных товара');
 }
 
 Widget ProductInfo(BuildContext context, Product product) {
@@ -175,4 +146,48 @@ Widget ProductInfo(BuildContext context, Product product) {
           minVerticalPadding: 15),
     ]),
   );
+}
+
+Future<Map<String, dynamic>> _fetchProductInfo(int code) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String serverAdress = prefs.getString('SERVER_ADRESS') ?? '';
+  //int limitProduct = prefs.getInt('LIMIT_PRODUCT') ?? 0;
+
+  final response = await http.get(
+    Uri.http(
+      serverAdress,
+      '/api/v1/product',
+      <String, String>{
+        'code': code.toString(),
+      },
+    ),
+  );
+
+  if (response.statusCode == 200) {
+    final body = json.decode(response.body);
+    return body;
+  }
+  throw Exception('Ошибка получения данных товара');
+}
+
+Future<Image> _fetchImage(String path) async {
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  String serverAdress = '192.168.10.10:5000';
+  //prefs.getString('SERVER_ADRESS') ?? '';
+  //int limitProduct = prefs.getInt('LIMIT_PRODUCT') ?? 0;
+
+  final response = await http.get(
+    Uri.http(
+      serverAdress,
+      '/api/v1/get-image',
+      <String, String>{
+        'path': path,
+      },
+    ),
+  );
+
+  if (response.statusCode == 200) {
+    return Image.memory(response.bodyBytes);
+  }
+  throw Exception('Ошибка получения данных товара');
 }
