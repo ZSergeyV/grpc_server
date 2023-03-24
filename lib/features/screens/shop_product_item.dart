@@ -15,6 +15,36 @@ class ProductPage extends StatelessWidget {
     final Product _product =
         ModalRoute.of(context)!.settings.arguments as Product;
 
+    late Map<String, dynamic> productInfo;
+
+    Future<Map<String, dynamic>> _fetchProductInfo(int code) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String serverAdress = prefs.getString('SERVER_ADRESS') ?? '';
+      //int limitProduct = prefs.getInt('LIMIT_PRODUCT') ?? 0;
+
+      final response = await http.get(
+        Uri.http(
+          serverAdress,
+          '/api/v1/product',
+          <String, String>{
+            'code': code.toString(),
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final body = json.decode(response.body);
+        return body;
+      }
+      throw Exception('Ошибка получения данных товара');
+    }
+
+    Future<void> getInfo(int code) async {
+      productInfo = await _fetchProductInfo(code);
+    }
+
+    getInfo(_product.code);
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 97, 97, 97),
@@ -36,8 +66,7 @@ class ProductPage extends StatelessWidget {
                             children: [
                               Expanded(
                                   flex: 1,
-                                  child:
-                                      ImageSliderProduct(code: _product.code)),
+                                  child: ImageSliderProduct(paths: [])),
                               Expanded(
                                 flex: 2,
                                 child: Column(
@@ -50,7 +79,7 @@ class ProductPage extends StatelessWidget {
                           )
                         : Column(
                             children: [
-                              ImageSliderProduct(code: _product.code),
+                              ImageSliderProduct(paths: []),
                               ProductInfo(context, _product)
                             ],
                           ),
@@ -60,18 +89,20 @@ class ProductPage extends StatelessWidget {
 }
 
 class ImageSliderProduct extends StatelessWidget {
-  ImageSliderProduct({super.key, required this.code});
-  final int code;
+  ImageSliderProduct({super.key, required this.paths});
+  final List<String> paths;
   List _imgProduct = [];
 
-  Future<void> _getImages() async {
-    final data = await _fetchProduct(code);
-    _imgProduct = data['images'] ?? [];
+  Future<void> _getImages(List<String> paths) async {
+    for (String path in paths) {
+      final data = await _fetchImage(path);
+      _imgProduct = data['images'] ?? [];
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    _getImages();
+    _getImages(paths);
     return CarouselSlider(
       options: CarouselOptions(),
       items: _imgProduct
@@ -84,7 +115,7 @@ class ImageSliderProduct extends StatelessWidget {
   }
 }
 
-Future<Map<String, dynamic>> _fetchProduct(int code) async {
+Future<Map<String, dynamic>> _fetchImage(String path) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String serverAdress = prefs.getString('SERVER_ADRESS') ?? '';
   //int limitProduct = prefs.getInt('LIMIT_PRODUCT') ?? 0;
@@ -92,9 +123,9 @@ Future<Map<String, dynamic>> _fetchProduct(int code) async {
   final response = await http.get(
     Uri.http(
       serverAdress,
-      '/api/v1/product',
+      '/api/v1/get-image',
       <String, String>{
-        'code': code.toString(),
+        'path': path,
       },
     ),
   );
