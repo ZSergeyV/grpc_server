@@ -340,6 +340,8 @@ Widget CartProductItem(CartItem item,
                       ),
                       extendet
                           ? Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SizedBox(
                                   height: 10,
@@ -351,6 +353,17 @@ Widget CartProductItem(CartItem item,
                                   textAlign: TextAlign.left,
                                   style: CART_TEXT_STYLE,
                                 ),
+                                Text('Где: ${item.product.storageCell}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.clip,
+                                    textAlign: TextAlign.left,
+                                    style: CART_TEXT_STYLE),
+                                Text(
+                                    'Количество: ${item.product.quantityStore}',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.clip,
+                                    textAlign: TextAlign.left,
+                                    style: CART_TEXT_STYLE)
                               ],
                             )
                           : noWidget
@@ -369,9 +382,13 @@ Widget CartProductItem(CartItem item,
                                     Color.fromARGB(255, 255, 255, 255),
                                 radius: Radius.circular(25)),
                             didChangeCount: (int value) {
-                              context!
-                                  .read<CartBloc>()
-                                  .add(ChangeCountProduct(item, value));
+                              if (value <= 0) {
+                                _showDialogDeleteProduct(context!, item);
+                              } else {
+                                context!
+                                    .read<CartBloc>()
+                                    .add(ChangeCountProduct(item, value));
+                              }
                             },
                           ))
                       : noWidget,
@@ -387,7 +404,7 @@ Widget CartProductItem(CartItem item,
                       children: [
                         Expanded(
                             child: Text(
-                          'Цена: ${item.product.price.toString()} р.',
+                          'Цена: ${item.product.price.toInt()} р.',
                           maxLines: 1,
                           overflow: TextOverflow.clip,
                           textAlign: TextAlign.left,
@@ -415,7 +432,7 @@ Widget CartProductItem(CartItem item,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          'Всего: ${item.price} р.',
+                          'Всего: ${item.price.toInt()} р.',
                           style: CART_TEXT_STYLE.copyWith(
                               fontWeight: FontWeight.bold, fontSize: 20),
                         )
@@ -470,6 +487,61 @@ Future<void> _showDialogClearCart(BuildContext context) async {
             ),
             onPressed: () {
               context.read<CartBloc>().add(ClearProduct());
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+Future<void> _showDialogDeleteProduct(
+    BuildContext context, CartItem item) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      ButtonStyle actionButtonStyle = ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10))));
+      return AlertDialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        // <-- SEE HERE
+        title: const Text('Удаление товара из корзины'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text(
+                'Вы уверены что хотите удалить из корзины "${item.product.name}" ?',
+                maxLines: 5,
+                overflow: TextOverflow.clip,
+                style: const TextStyle(fontSize: 24),
+              ),
+            ],
+          ),
+        ),
+        actionsOverflowButtonSpacing: 10,
+        actions: <Widget>[
+          ElevatedButton(
+            style: actionButtonStyle.copyWith(
+                backgroundColor: MaterialStateProperty.all(Colors.red)),
+            child: const Text('Нет'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          ElevatedButton(
+            style: actionButtonStyle.copyWith(
+                backgroundColor: MaterialStateProperty.all(Colors.blue)),
+            child: const Text(
+              'Да',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            onPressed: () {
+              context.read<CartBloc>().add(DeleteProduct(item));
               Navigator.of(context).pop();
             },
           ),

@@ -71,9 +71,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       index++;
     }
 
-    for (var element in items) {
-      totalPrice = totalPrice + element.price;
-    }
+    // for (var element in items) {
+    //   totalPrice = totalPrice + element.price;
+    // }
+    totalPrice = _totalSum(items);
+
     return emit(state.copyWith(
         status: CartStatus.initial,
         items: items,
@@ -82,7 +84,22 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   }
 
   Future<void> _onDeleteCartProduct(
-      DeleteProduct event, Emitter<CartState> emit) async {}
+      DeleteProduct event, Emitter<CartState> emit) async {
+    List<CartItem> items = state.items;
+    double totalPrice = 0;
+
+    items.removeWhere((element) => element == event.item);
+
+    final CartStatus returnStatus =
+        items.isEmpty ? CartStatus.empty : CartStatus.initial;
+    totalPrice = items.isEmpty ? 0 : _totalSum(items);
+
+    return emit(state.copyWith(
+        status: returnStatus,
+        items: items,
+        totalCount: items.length,
+        totalPrice: totalPrice));
+  }
 
   Future<void> _onClearCart(ClearProduct event, Emitter<CartState> emit) async {
     return emit(state.copyWith(
@@ -99,4 +116,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
     return result;
   }
+
+  double _totalSum(List<CartItem> items) => items
+      .map<double>((e) => e.price)
+      .reduce((value, element) => value + element);
 }

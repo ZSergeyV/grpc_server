@@ -11,8 +11,8 @@ class AddProduct extends CartEvent {
 }
 
 class DeleteProduct extends CartEvent {
-  final Product product;
-  DeleteProduct(this.product);
+  final CartItem item;
+  DeleteProduct(this.item);
 }
 
 class ChangeCountProduct extends CartEvent {
