@@ -47,7 +47,7 @@ dependencies:
   http: ^0.13.0
   carousel_slider: ^4.2.1
   badges: ^3.0.2
-
+  cart_stepper: ^4.1.0
   
 dev_dependencies:
   flutter_test:

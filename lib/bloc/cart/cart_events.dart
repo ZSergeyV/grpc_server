@@ -7,10 +7,18 @@ abstract class CartEvent extends Equatable {
 
 class AddProduct extends CartEvent {
   final Product product;
-
   AddProduct(this.product);
 }
 
-class DeleteProduct extends CartEvent {}
+class DeleteProduct extends CartEvent {
+  final Product product;
+  DeleteProduct(this.product);
+}
+
+class ChangeCountProduct extends CartEvent {
+  final CartItem item;
+  final int count;
+  ChangeCountProduct(this.item, this.count);
+}
 
 class ClearProduct extends CartEvent {}

@@ -1,3 +1,4 @@
+import 'package:cart_stepper/cart_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,14 +7,10 @@ import 'package:grpc_server/config/config.dart';
 import 'package:grpc_server/core/model/cart.dart';
 
 class CartPage extends StatelessWidget {
-  const CartPage({super.key}); //required this.blocContext,
-
-  //final BuildContext blocContext;
+  const CartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // final cartBloc = blocContext.watch<CartBloc>();
-    // final cartBloc = context.read<CartBloc>();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -43,7 +40,8 @@ class CartPage extends StatelessWidget {
                           case CartStatus.initial:
                             return ListView.builder(
                               itemBuilder: (BuildContext context, int index) {
-                                return Text(state.items[index].product.name);
+                                return CartProductItem(
+                                    state.items[index], true, context);
                               },
                               itemCount: state.items.length,
                             );
@@ -306,7 +304,10 @@ class SaleTotalWidget extends StatelessWidget {
   }
 }
 
-Widget CartProductItem(CartItem item) {
+// ignore: non_constant_identifier_names
+Widget CartProductItem(CartItem item,
+    [bool extendet = false, BuildContext? context]) {
+  const noWidget = SizedBox();
   return Padding(
     padding: const EdgeInsets.all(4.0),
     child: Material(
@@ -317,46 +318,109 @@ Widget CartProductItem(CartItem item) {
             children: [
               Row(
                 children: [
+                  SizedBox(
+                    width: 65,
+                    child: item.product.thumb != ''
+                        ? Image.network(
+                            item.product.thumb,
+                            width: 65,
+                          )
+                        : Image.asset('assets/images/no-image.png'),
+                  ),
                   Expanded(
-                      child: Text(
-                    item.product.name,
-                    maxLines: 5,
-                    overflow: TextOverflow.clip,
-                    style: PRODUCT_TEXT_STYLE,
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.product.name,
+                        maxLines: 5,
+                        overflow: TextOverflow.clip,
+                        style: PRODUCT_TEXT_STYLE,
+                      ),
+                      extendet
+                          ? Column(
+                              children: [
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  'Цена: ${item.product.price.toString()} р.',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.clip,
+                                  textAlign: TextAlign.left,
+                                  style: CART_TEXT_STYLE,
+                                ),
+                              ],
+                            )
+                          : noWidget
+                    ],
                   )),
+                  extendet
+                      ? SizedBox(
+                          width: 120,
+                          height: 45,
+                          child: CartStepperInt(
+                            size: 33,
+                            value: item.count,
+                            stepper: 1,
+                            style: const CartStepperStyle(
+                                activeForegroundColor:
+                                    Color.fromARGB(255, 255, 255, 255),
+                                radius: Radius.circular(25)),
+                            didChangeCount: (int value) {
+                              context!
+                                  .read<CartBloc>()
+                                  .add(ChangeCountProduct(item, value));
+                            },
+                          ))
+                      : noWidget,
                 ],
               ),
-              const Divider(
-                height: 15.0,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                      child: Text(
-                    'Цена: ${item.product.price.toString()} р.',
-                    maxLines: 1,
-                    overflow: TextOverflow.clip,
-                    textAlign: TextAlign.left,
-                    style: CART_TEXT_STYLE,
-                  )),
-                  Expanded(
-                      child: Text(
-                    '${item.count} шт.',
-                    maxLines: 1,
-                    overflow: TextOverflow.clip,
-                    textAlign: TextAlign.center,
-                    style: CART_TEXT_STYLE,
-                  )),
-                  Expanded(
-                      child: Text(
-                    '${item.price} р.',
-                    maxLines: 1,
-                    overflow: TextOverflow.clip,
-                    textAlign: TextAlign.right,
-                    style: CART_TEXT_STYLE,
-                  )),
-                ],
-              )
+              !extendet
+                  ? const Divider(
+                      height: 15.0,
+                    )
+                  : noWidget,
+              !extendet
+                  ? Row(
+                      children: [
+                        Expanded(
+                            child: Text(
+                          'Цена: ${item.product.price.toString()} р.',
+                          maxLines: 1,
+                          overflow: TextOverflow.clip,
+                          textAlign: TextAlign.left,
+                          style: CART_TEXT_STYLE,
+                        )),
+                        Expanded(
+                            child: Text(
+                          '${item.count} шт.',
+                          maxLines: 1,
+                          overflow: TextOverflow.clip,
+                          textAlign: TextAlign.center,
+                          style: CART_TEXT_STYLE,
+                        )),
+                        Expanded(
+                            child: Text(
+                          '${item.price} р.',
+                          maxLines: 1,
+                          overflow: TextOverflow.clip,
+                          textAlign: TextAlign.right,
+                          style: CART_TEXT_STYLE,
+                        )),
+                      ],
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Всего: ${item.price} р.',
+                          style: CART_TEXT_STYLE.copyWith(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        )
+                      ],
+                    ),
             ],
           ),
         )),

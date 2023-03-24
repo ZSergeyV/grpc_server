@@ -7,7 +7,6 @@ import 'package:grpc_server/core/router.dart' as router;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  //ApplicationSettings().init();
   runApp(MultiBlocProvider(
       providers: [
         BlocProvider<CartBloc>(

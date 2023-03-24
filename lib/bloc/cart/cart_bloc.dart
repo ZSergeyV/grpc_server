@@ -10,6 +10,7 @@ part 'cart_states.dart';
 class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc() : super(const CartState()) {
     on<AddProduct>(_onAddCartProduct);
+    on<ChangeCountProduct>(_onChangeCountProduct);
     on<DeleteProduct>(_onDeleteCartProduct);
     on<ClearProduct>(_onClearCart);
 
@@ -50,6 +51,33 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         status: CartStatus.initial,
         items: items,
         totalCount: items.length,
+        totalPrice: totalPrice));
+  }
+
+  Future<void> _onChangeCountProduct(
+      ChangeCountProduct event, Emitter<CartState> emit) async {
+    List<CartItem> items = state.items;
+    int index = 0, itemCount = 0;
+    double itemPrice = 0, totalPrice = 0;
+
+    for (var element in state.items) {
+      if (element == event.item) {
+        itemCount = event.count;
+        itemPrice = event.count * event.item.product.price;
+
+        items[index] = CartItem(
+            product: event.item.product, count: itemCount, price: itemPrice);
+      }
+      index++;
+    }
+
+    for (var element in items) {
+      totalPrice = totalPrice + element.price;
+    }
+    return emit(state.copyWith(
+        status: CartStatus.initial,
+        items: items,
+        totalCount: state.totalCount,
         totalPrice: totalPrice));
   }
 
