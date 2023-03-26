@@ -30,7 +30,7 @@ class ProductPage extends StatelessWidget {
             builder:
                 (context, AsyncSnapshot<Map<String, dynamic>> productInfo) {
               if (productInfo.hasData) {
-                final List<String> listImages = productInfo.data!['images'];
+                final List listImages = productInfo.data!['images'];
                 return OrientationBuilder(
                     builder: (context, orientation) => SafeArea(
                           child: Padding(
@@ -72,7 +72,7 @@ class ProductPage extends StatelessWidget {
 
 class ImageSliderProduct extends StatelessWidget {
   ImageSliderProduct({super.key, required this.paths});
-  final List<String> paths;
+  final List paths;
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +152,7 @@ Future<Map<String, dynamic>> _fetchProductInfo(int code) async {
     for (int index = 0; index <= body!['images'].length - 1; index++) {
       //   final img = await _fetchImage(listImages[index]);
       //   // .then((value) => body!['images'][index] = value);
-      body!['images'][index] = '$serverAdress${body!['images'][index]}';
+      body!['images'][index] = 'http://$serverAdress${body!['images'][index]}';
     }
 
     return body;
