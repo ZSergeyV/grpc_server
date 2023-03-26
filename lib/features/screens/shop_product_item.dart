@@ -30,7 +30,7 @@ class ProductPage extends StatelessWidget {
             builder:
                 (context, AsyncSnapshot<Map<String, dynamic>> productInfo) {
               if (productInfo.hasData) {
-                final List<dynamic> listImages = productInfo.data!['images'];
+                final List<String> listImages = productInfo.data!['images'];
                 return OrientationBuilder(
                     builder: (context, orientation) => SafeArea(
                           child: Padding(
@@ -72,37 +72,17 @@ class ProductPage extends StatelessWidget {
 
 class ImageSliderProduct extends StatelessWidget {
   ImageSliderProduct({super.key, required this.paths});
-  final List<dynamic> paths;
-  List _imgProduct = [];
-
-  // Future<void> _getImages(List<dynamic> paths) async {
-  //   for (String path in paths) {
-  //     final data = await _fetchImage(path);
-  //     _imgProduct = data['images'] ?? [];
-  //   }
-  // }
+  final List<String> paths;
 
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
       options: CarouselOptions(),
       items: paths
-          .map((item) => FutureBuilder<Image>(
-                  future: _fetchImage(item),
-                  builder: (context, AsyncSnapshot<Image> snapshot) {
-                    if (snapshot.hasData) {
-                      return snapshot.data!;
-                    } else {
-                      return const SizedBox();
-                    }
-                  })
-
-              // Container(
-              //       margin: const EdgeInsets.only(left: 8, right: 8, top: 0),
-              //       child: Center(child: Image.network(item, fit: BoxFit.cover)),
-              //     )
-
-              )
+          .map((item) => Container(
+                margin: const EdgeInsets.only(left: 8, right: 8, top: 0),
+                child: Center(child: Image.network(item, fit: BoxFit.cover)),
+              ))
           .toList(),
     );
   }
@@ -149,14 +129,15 @@ Widget ProductInfo(BuildContext context, Product product) {
 }
 
 Future<Map<String, dynamic>> _fetchProductInfo(int code) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String serverAdress = prefs.getString('SERVER_ADRESS') ?? '';
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // String serverAdress = prefs.getString('SERVER_ADRESS') ?? '';
+  String serverAdress = '192.168.10.10:5000';
   //int limitProduct = prefs.getInt('LIMIT_PRODUCT') ?? 0;
 
   final response = await http.get(
     Uri.http(
       serverAdress,
-      '/api/v1/product',
+      '/api/v2/product',
       <String, String>{
         'code': code.toString(),
       },
@@ -165,6 +146,15 @@ Future<Map<String, dynamic>> _fetchProductInfo(int code) async {
 
   if (response.statusCode == 200) {
     final body = json.decode(response.body);
+    // final List<dynamic> listImages = body!['images'];
+    // Image img;
+
+    for (int index = 0; index <= body!['images'].length - 1; index++) {
+      //   final img = await _fetchImage(listImages[index]);
+      //   // .then((value) => body!['images'][index] = value);
+      body!['images'][index] = '$serverAdress${body!['images'][index]}';
+    }
+
     return body;
   }
   throw Exception('Ошибка получения данных товара');

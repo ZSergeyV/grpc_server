@@ -28,6 +28,11 @@ class _LeftPanelDateTimeState extends State<LeftPanelDateTime> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _getTime() {
     final DateTime now = DateTime.now();
     final String formattedTime = _formatDateTime(now, 'HH:mm');
