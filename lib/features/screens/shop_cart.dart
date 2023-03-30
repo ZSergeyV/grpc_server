@@ -30,42 +30,62 @@ class CartPage extends StatelessWidget {
       ),
       body: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
         return SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                  child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Builder(builder: (context) {
-                        switch (state.status) {
-                          case CartStatus.initial:
-                            return ListView.builder(
-                              itemBuilder: (BuildContext context, int index) {
-                                return CartProductItem(
-                                    state.items[index], true, context);
-                              },
-                              itemCount: state.items.length,
-                            );
-                          case CartStatus.empty:
-                            return const Center(
-                                child: Text(
-                              'Корзина пуста',
-                              style: TextStyle(fontSize: 24),
-                            ));
-                          default:
-                            return const SizedBox();
-                        }
-                      }))),
-              Container(
+            child: Column(
+          children: [
+            Expanded(
+                child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Builder(builder: (context) {
+                      switch (state.status) {
+                        case CartStatus.initial:
+                          return ListView.builder(
+                            itemBuilder: (BuildContext context, int index) {
+                              return CartProductItem(
+                                  state.items[index], true, context);
+                            },
+                            itemCount: state.items.length,
+                          );
+                        case CartStatus.empty:
+                          return const Center(
+                              child: Text(
+                            'Корзина пуста',
+                            style: TextStyle(fontSize: 24),
+                          ));
+                        default:
+                          return const SizedBox();
+                      }
+                    }))),
+            Container(
                 height: 60,
-                color: Colors.red,
-              )
-            ],
-          ),
-        );
+                color: const Color.fromARGB(255, 5, 128, 46),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(16, 0, 8, 0),
+                      child: Text(
+                        'ИТОГО: ${state.totalPrice.toInt() == state.totalPrice ? state.totalPrice.toInt() : state.totalPrice} р.',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Colors.white,
+                              fontSize: 32,
+                              fontWeight: FontWeight.w300,
+                            ),
+                      ),
+                    ),
+                    TextButton(
+                        onPressed: () => debugPrint('press'),
+                        child: const Text(
+                          'ОПЛАТИТЬ',
+                          style: TextStyle(color: Colors.white, fontSize: 28),
+                        ))
+                  ],
+                )),
+          ],
+        ));
       }),
-      // )
     );
-    // });
   }
 }
 
@@ -208,19 +228,9 @@ class CartTopWidget extends StatelessWidget {
             child: Text(
               'Корзина',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-              // style: FlutterFlowTheme.of(context).bodyText1.override(
-              //       fontFamily: 'Poppins',
-              //       color: FlutterFlowTheme.of(context).topMenuText,
-              //       fontSize: 20,
-              //       fontWeight: FontWeight.w300,
-              //     ),
             ),
           ),
           IconButton(
-            // borderColor: Colors.transparent,
-            // borderRadius: 5,
-            // borderWidth: 1,
-            // buttonSize: 52,
             icon: const Icon(
               Icons.delete_outline,
               color: Color(0xFFE83333),
@@ -358,8 +368,7 @@ Widget CartProductItem(CartItem item,
                                     overflow: TextOverflow.clip,
                                     textAlign: TextAlign.left,
                                     style: CART_TEXT_STYLE),
-                                Text(
-                                    'Количество: ${item.product.quantityStore}',
+                                Text('Наличие: ${item.product.quantityStore}',
                                     maxLines: 1,
                                     overflow: TextOverflow.clip,
                                     textAlign: TextAlign.left,
@@ -434,7 +443,7 @@ Widget CartProductItem(CartItem item,
                         Text(
                           'Всего: ${item.price.toInt()} р.',
                           style: CART_TEXT_STYLE.copyWith(
-                              fontWeight: FontWeight.bold, fontSize: 20),
+                              fontWeight: FontWeight.bold, fontSize: 18),
                         )
                       ],
                     ),
