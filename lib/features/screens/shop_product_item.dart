@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 // import 'package:grpc_server/bloc/settings/settings_bloc.dart';
@@ -49,7 +50,8 @@ class ProductPage extends StatelessWidget {
                                         flex: 2,
                                         child: Column(
                                           children: [
-                                            ProductInfo(context, _product),
+                                            ProductInfo(
+                                                context, productInfo.data!),
                                           ],
                                         ),
                                       )
@@ -57,8 +59,11 @@ class ProductPage extends StatelessWidget {
                                   )
                                 : Column(
                                     children: [
-                                      ImageSliderProduct(paths: listImages),
-                                      ProductInfo(context, _product)
+                                      Hero(
+                                          tag: _product.code,
+                                          child: ImageSliderProduct(
+                                              paths: listImages)),
+                                      ProductInfo(context, productInfo.data!)
                                     ],
                                   ),
                           ),
@@ -79,45 +84,55 @@ class ImageSliderProduct extends StatelessWidget {
     return CarouselSlider(
       options: CarouselOptions(),
       items: paths
-          .map((item) => Container(
+          .map((path) => Container(
                 margin: const EdgeInsets.only(left: 8, right: 8, top: 0),
-                child: Center(child: Image.network(item, fit: BoxFit.cover)),
+                child: Center(
+                  child: CachedNetworkImage(
+                    imageUrl: path,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                    errorWidget: (context, url, error) =>
+                        const Text('Не удалось загрузить изображение'),
+                  ),
+                ),
               ))
           .toList(),
     );
   }
 }
 
-Widget ProductInfo(BuildContext context, Product product) {
+Widget ProductInfo(BuildContext context, Map product) {
   const TextStyle menuTextStyle =
       TextStyle(fontSize: 20, fontWeight: FontWeight.w400);
   return Expanded(
     child: ListView(children: [
       ListTile(
         leading: const Text('Где:', style: menuTextStyle),
-        title: Text(product.storageCell.toString(), style: menuTextStyle),
+        title: Text(product['storage_cell'].toString(), style: menuTextStyle),
         onTap: () {},
         minVerticalPadding: 15,
       ),
       ListTile(
           leading: const Text('Запас', style: menuTextStyle),
-          title:
-              Text(product.storageCellStock.toString(), style: menuTextStyle),
+          title: Text(product['storage_cell_stock'].toString(),
+              style: menuTextStyle),
           onTap: () {},
           minVerticalPadding: 15),
       ListTile(
           leading: const Text('Наличие', style: menuTextStyle),
-          title: Text(product.quantityStore.toString(), style: menuTextStyle),
+          title:
+              Text(product['quantity_store'].toString(), style: menuTextStyle),
           onTap: () {},
           minVerticalPadding: 15),
       ListTile(
           leading: const Text('На ближнем складе', style: menuTextStyle),
-          title: Text(product.quantityStock.toString(), style: menuTextStyle),
+          title:
+              Text(product['quantity_stock'].toString(), style: menuTextStyle),
           onTap: () {},
           minVerticalPadding: 15),
       ListTile(
           leading: const Text('На дальнем складе', style: menuTextStyle),
-          title: const Text('', style: menuTextStyle),
+          title: Text(product['provider'] ?? '', style: menuTextStyle),
           trailing: InkWell(
             child: const Icon(Icons.edit),
             onTap: () => debugPrint('tap'),
@@ -131,7 +146,7 @@ Widget ProductInfo(BuildContext context, Product product) {
 Future<Map<String, dynamic>> _fetchProductInfo(int code) async {
   // SharedPreferences prefs = await SharedPreferences.getInstance();
   // String serverAdress = prefs.getString('SERVER_ADRESS') ?? '';
-  String serverAdress = '192.168.10.10:5000';
+  String serverAdress = '192.168.1.12:5000';
   //int limitProduct = prefs.getInt('LIMIT_PRODUCT') ?? 0;
 
   final response = await http.get(
@@ -160,24 +175,24 @@ Future<Map<String, dynamic>> _fetchProductInfo(int code) async {
   throw Exception('Ошибка получения данных товара');
 }
 
-Future<Image> _fetchImage(String path) async {
-  // SharedPreferences prefs = await SharedPreferences.getInstance();
-  String serverAdress = '192.168.10.10:5000';
-  //prefs.getString('SERVER_ADRESS') ?? '';
-  //int limitProduct = prefs.getInt('LIMIT_PRODUCT') ?? 0;
+// Future<Image> _fetchImage(String path) async {
+//   // SharedPreferences prefs = await SharedPreferences.getInstance();
+//   String serverAdress = '192.168.1.12:5000';
+//   //prefs.getString('SERVER_ADRESS') ?? '';
+//   //int limitProduct = prefs.getInt('LIMIT_PRODUCT') ?? 0;
 
-  final response = await http.get(
-    Uri.http(
-      serverAdress,
-      '/api/v1/get-image',
-      <String, String>{
-        'path': path,
-      },
-    ),
-  );
+//   final response = await http.get(
+//     Uri.http(
+//       serverAdress,
+//       '/api/v1/get-image',
+//       <String, String>{
+//         'path': path,
+//       },
+//     ),
+//   );
 
-  if (response.statusCode == 200) {
-    return Image.memory(response.bodyBytes);
-  }
-  throw Exception('Ошибка получения данных товара');
-}
+//   if (response.statusCode == 200) {
+//     return Image.memory(response.bodyBytes);
+//   }
+//   throw Exception('Ошибка получения данных товара');
+// }
