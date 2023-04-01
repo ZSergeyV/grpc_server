@@ -276,20 +276,6 @@ class SaleTotalWidget extends StatelessWidget {
                         ),
                   ),
                 ),
-                // IconButton(
-                //   // borderColor: Colors.transparent,
-                //   // borderRadius: 0,
-                //   // borderWidth: 1,
-                //   // buttonSize: 52,
-                //   icon: const Icon(
-                //     Icons.keyboard_control_outlined,
-                //     color: Colors.white,
-                //     size: 30,
-                //   ),
-                //   onPressed: () {
-                //     print('IconButton pressed ...');
-                //   },
-                // ),
               ],
             ),
           ),
@@ -497,6 +483,7 @@ Future<void> _showDialogClearCart(BuildContext context) async {
 
 Future<void> _showDialogDeleteProduct(
     BuildContext context, CartItem item) async {
+  final _padding = MediaQuery.of(context).size.width / 4;
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
@@ -506,6 +493,8 @@ Future<void> _showDialogDeleteProduct(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10))));
       return AlertDialog(
+        insetPadding: EdgeInsets.only(left: _padding, right: _padding),
+        //MediaQuery.of(context).size.width / 4,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20))),
         // <-- SEE HERE
