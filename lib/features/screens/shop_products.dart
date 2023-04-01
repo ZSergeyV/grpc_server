@@ -98,7 +98,7 @@ Widget ProductListItem(BuildContext context, Product product) {
   var _cartBloc = context.watch<CartBloc>();
   final itemInCart = _cartBloc.productInCart(product);
   return Padding(
-    padding: const EdgeInsets.all(1.0),
+    padding: const EdgeInsets.only(bottom: 5),
     child: Material(
       elevation: 0,
       child: ListTile(

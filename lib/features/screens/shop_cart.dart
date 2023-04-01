@@ -329,7 +329,8 @@ Widget CartProductItem(CartItem item,
               Row(
                 children: [
                   SizedBox(
-                    width: 100,
+                    width: 90,
+                    height: 90,
                     child: item.product.thumb != ''
                         ? Image.network(
                             item.product.thumb,
@@ -338,45 +339,49 @@ Widget CartProductItem(CartItem item,
                         : Image.asset('assets/images/no-image.png'),
                   ),
                   Expanded(
-                      child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.product.name,
-                        maxLines: 5,
-                        overflow: TextOverflow.clip,
-                        style: PRODUCT_TEXT_STYLE,
-                      ),
-                      extendet
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  'Цена: ${item.product.price.toString()} р.',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.clip,
-                                  textAlign: TextAlign.left,
-                                  style: CART_TEXT_STYLE,
-                                ),
-                                Text('Где: ${item.product.storageCell}',
+                      child: Padding(
+                    padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.product.name,
+                          maxLines: 5,
+                          overflow: TextOverflow.clip,
+                          style: PRODUCT_TEXT_STYLE.copyWith(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        extendet
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // const SizedBox(
+                                  //   height: 10,
+                                  // ),
+                                  Text(
+                                    'Цена: ${item.product.price.toString()} р.   ',
                                     maxLines: 1,
                                     overflow: TextOverflow.clip,
                                     textAlign: TextAlign.left,
-                                    style: CART_TEXT_STYLE),
-                                Text('Наличие: ${item.product.quantityStore}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.clip,
-                                    textAlign: TextAlign.left,
-                                    style: CART_TEXT_STYLE)
-                              ],
-                            )
-                          : noWidget
-                    ],
+                                    style: CART_TEXT_STYLE,
+                                  ),
+                                  Text('Где: ${item.product.storageCell}   ',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.clip,
+                                      textAlign: TextAlign.left,
+                                      style: CART_TEXT_STYLE),
+                                  Text('Наличие: ${item.product.quantityStore}',
+                                      maxLines: 1,
+                                      overflow: TextOverflow.clip,
+                                      textAlign: TextAlign.left,
+                                      style: CART_TEXT_STYLE)
+                                ],
+                              )
+                            : noWidget
+                      ],
+                    ),
                   )),
                   extendet
                       ? SizedBox(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -20,11 +21,11 @@ class ProductPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 97, 97, 97),
-          title: Text(
+          title: const Text(
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            _product.name,
-            style: const TextStyle(color: Colors.white),
+            'Назад',
+            style: TextStyle(color: Colors.white),
           ),
         ),
         body: FutureBuilder<Map<String, dynamic>>(
@@ -80,7 +81,7 @@ class ImageSliderProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
-      options: CarouselOptions(),
+      options: CarouselOptions(enableInfiniteScroll: false),
       items: paths
           .map((path) => Container(
                 margin: const EdgeInsets.only(left: 8, right: 8, top: 0),
@@ -101,43 +102,74 @@ class ImageSliderProduct extends StatelessWidget {
 
 Widget ProductInfo(BuildContext context, Map product) {
   const TextStyle menuTextStyle =
-      TextStyle(fontSize: 20, fontWeight: FontWeight.w400);
+      TextStyle(fontSize: 22, fontWeight: FontWeight.w400);
+  const double minInterval = 0;
   // final LocalStoreSettings localStore = LocalStoreSettings();
   return Expanded(
     child: ListView(children: [
+      Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(product['name'],
+                  style: menuTextStyle.copyWith(fontSize: 26)),
+              const SizedBox(height: 10),
+              Text('Цена: ${product['price']} р.',
+                  style: menuTextStyle.copyWith(fontSize: 26)),
+            ]),
+      ),
+      const SizedBox(height: 20),
+      ListTile(
+          leading: const Text('Наличие:', style: menuTextStyle),
+          title:
+              Text(product['quantity_store'].toString(), style: menuTextStyle),
+          trailing: TextButton(
+            child: Text('Редактировать',
+                style: menuTextStyle.copyWith(fontSize: 22)),
+            onPressed: () {},
+          ),
+          minVerticalPadding: minInterval),
       ListTile(
         leading: const Text('Где:', style: menuTextStyle),
         title: Text(product['storage_cell'].toString(), style: menuTextStyle),
-        onTap: () {},
-        minVerticalPadding: 15,
+        trailing: TextButton(
+          child: Text('Редактировать',
+              style: menuTextStyle.copyWith(fontSize: 22)),
+          onPressed: () {},
+        ),
+        minVerticalPadding: minInterval,
       ),
       ListTile(
           leading: const Text('Запас', style: menuTextStyle),
           title: Text(product['storage_cell_stock'].toString(),
               style: menuTextStyle),
-          onTap: () {},
-          minVerticalPadding: 15),
-      ListTile(
-          leading: const Text('Наличие', style: menuTextStyle),
-          title:
-              Text(product['quantity_store'].toString(), style: menuTextStyle),
-          onTap: () {},
-          minVerticalPadding: 15),
+          trailing: TextButton(
+            child: Text('Редактировать',
+                style: menuTextStyle.copyWith(fontSize: 22)),
+            onPressed: () {},
+          ),
+          minVerticalPadding: minInterval),
       ListTile(
           leading: const Text('На ближнем складе', style: menuTextStyle),
           title:
               Text(product['quantity_stock'].toString(), style: menuTextStyle),
-          onTap: () {},
           minVerticalPadding: 15),
       ListTile(
           leading: const Text('На дальнем складе', style: menuTextStyle),
           title: Text(product['provider'] ?? '', style: menuTextStyle),
-          trailing: InkWell(
-            child: const Icon(Icons.edit),
-            onTap: () => debugPrint('tap'),
-          ),
-          // onTap: () => Navigator.pushNamed(context, SettingsPageRoute),
-          minVerticalPadding: 15),
+          minVerticalPadding: minInterval),
+      Row(
+        children: [
+          FilledButton(
+              onPressed: () {},
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStatePropertyAll<Color>(Colors.green)),
+              child: Text('В корзину', style: menuTextStyle))
+        ],
+      )
     ]),
   );
 }
