@@ -60,10 +60,7 @@ class ProductPage extends StatelessWidget {
                                   )
                                 : Column(
                                     children: [
-                                      Hero(
-                                          tag: _product.code,
-                                          child: ImageSliderProduct(
-                                              paths: listImages)),
+                                      ImageSliderProduct(paths: listImages),
                                       ProductInfo(context, productInfo.data!)
                                     ],
                                   ),

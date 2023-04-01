@@ -109,12 +109,9 @@ Widget ProductListItem(BuildContext context, Product product) {
           children: [
             Expanded(
               child: thumb != ''
-                  ? Hero(
-                      tag: product.code,
-                      child: Image.network(
-                        product.thumb,
-                        width: 60,
-                      ),
+                  ? Image.network(
+                      product.thumb,
+                      width: 60,
                     )
                   : Image.asset('assets/images/no-image.png'),
             ),

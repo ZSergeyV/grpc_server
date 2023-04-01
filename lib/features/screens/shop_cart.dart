@@ -329,7 +329,7 @@ Widget CartProductItem(CartItem item,
               Row(
                 children: [
                   SizedBox(
-                    width: 90,
+                    width: 100,
                     child: item.product.thumb != ''
                         ? Image.network(
                             item.product.thumb,
