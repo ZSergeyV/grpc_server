@@ -1,14 +1,13 @@
 import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 // import 'package:grpc_server/bloc/settings/settings_bloc.dart';
 import 'package:grpc_server/core/model/products.dart';
 // import 'package:grpc_server/resources/local_store.dart';
 import 'package:http/http.dart' as http;
-// import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key});
@@ -17,7 +16,7 @@ class ProductPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Product _product =
         ModalRoute.of(context)!.settings.arguments as Product;
-
+    var _cartBloc = context.watch<CartBloc>();
     return Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 97, 97, 97),
@@ -34,6 +33,8 @@ class ProductPage extends StatelessWidget {
                 (context, AsyncSnapshot<Map<String, dynamic>> productInfo) {
               if (productInfo.hasData) {
                 final List listImages = productInfo.data!['images'];
+                productInfo.data!
+                    .addAll({'product': _product, 'bloc': _cartBloc});
                 return OrientationBuilder(
                     builder: (context, orientation) => SafeArea(
                           child: Padding(
@@ -105,6 +106,8 @@ Widget ProductInfo(BuildContext context, Map product) {
       TextStyle(fontSize: 22, fontWeight: FontWeight.w400);
   const double minInterval = 0;
   // final LocalStoreSettings localStore = LocalStoreSettings();
+  final CartBloc cartBloc = product['bloc'];
+  final productInCart = cartBloc.productInCart(product['product']);
   return Expanded(
     child: ListView(children: [
       Padding(
@@ -160,15 +163,21 @@ Widget ProductInfo(BuildContext context, Map product) {
           leading: const Text('На дальнем складе', style: menuTextStyle),
           title: Text(product['provider'] ?? '', style: menuTextStyle),
           minVerticalPadding: minInterval),
-      Row(
-        children: [
-          FilledButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStatePropertyAll<Color>(Colors.green)),
-              child: Text('В корзину', style: menuTextStyle))
-        ],
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FilledButton(
+                onPressed: () => cartBloc.add(AddProduct(product['product'])),
+                style: FilledButton.styleFrom(
+                    backgroundColor: Colors.amber[900],
+                    shape: const RoundedRectangleBorder()),
+                child: Text(
+                    'В корзину ${productInCart['isCart'] ? '( ${productInCart['count']} )' : ''}',
+                    style: menuTextStyle.copyWith(fontSize: 24)))
+          ],
+        ),
       )
     ]),
   );

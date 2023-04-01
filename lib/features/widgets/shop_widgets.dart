@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 import 'package:grpc_server/bloc/categories/categories_bloc.dart';
-// import 'package:grpc_server/core/model/categories.dart';
 import 'package:grpc_server/features/screens/screens.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:grpc_server/resources/local_store.dart';

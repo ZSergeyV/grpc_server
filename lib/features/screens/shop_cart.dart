@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 import 'package:grpc_server/config/config.dart';
 import 'package:grpc_server/core/model/cart.dart';
+import 'package:grpc_server/features/screens/screens.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -171,23 +172,7 @@ class Cart extends StatelessWidget {
           ),
           Expanded(
             child: InkWell(
-              onTap: () async {
-                await showDialog(
-                  context: context,
-                  builder: (alertDialogContext) {
-                    return AlertDialog(
-                      title: const Text('test'),
-                      content: const Text('message'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(alertDialogContext),
-                          child: const Text('Ok'),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
+              onTap: () => Navigator.pushNamed(context, CartPageRoute),
               child: const SaleTotalWidget(),
             ),
           ),
@@ -291,20 +276,20 @@ class SaleTotalWidget extends StatelessWidget {
                         ),
                   ),
                 ),
-                IconButton(
-                  // borderColor: Colors.transparent,
-                  // borderRadius: 0,
-                  // borderWidth: 1,
-                  // buttonSize: 52,
-                  icon: const Icon(
-                    Icons.keyboard_control_outlined,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    print('IconButton pressed ...');
-                  },
-                ),
+                // IconButton(
+                //   // borderColor: Colors.transparent,
+                //   // borderRadius: 0,
+                //   // borderWidth: 1,
+                //   // buttonSize: 52,
+                //   icon: const Icon(
+                //     Icons.keyboard_control_outlined,
+                //     color: Colors.white,
+                //     size: 30,
+                //   ),
+                //   onPressed: () {
+                //     print('IconButton pressed ...');
+                //   },
+                // ),
               ],
             ),
           ),
