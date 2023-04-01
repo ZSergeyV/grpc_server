@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 import 'package:grpc_server/bloc/products/products_bloc.dart';
 import 'package:grpc_server/bloc/categories/categories_bloc.dart';
 import 'package:grpc_server/features/screens/screens.dart';
-// import 'package:grpc_server/features/screens/shop_cart.dart';
 import 'package:grpc_server/features/widgets/shop_widgets.dart';
 import 'package:grpc_server/resources/local_store.dart';
 import 'package:http/http.dart' as http;
@@ -14,14 +12,10 @@ class MainShopPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isCategory =
-        ModalRoute.of(context)!.settings.name == ShopMainPageRoute
-            ? true
-            : false;
     final LocalStoreSettings localStore = LocalStoreSettings();
     return Scaffold(
         backgroundColor: const Color(0xFFC9C9C9),
-        // drawer: const LeftMenuShop(),
+        drawer: const LeftMenuShop(),
         body: MultiBlocProvider(
             providers: [
               BlocProvider<CategoriesBloc>(

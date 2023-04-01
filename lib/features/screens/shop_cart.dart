@@ -329,11 +329,11 @@ Widget CartProductItem(CartItem item,
               Row(
                 children: [
                   SizedBox(
-                    width: 65,
+                    width: 90,
                     child: item.product.thumb != ''
                         ? Image.network(
                             item.product.thumb,
-                            width: 65,
+                            width: 90,
                           )
                         : Image.asset('assets/images/no-image.png'),
                   ),

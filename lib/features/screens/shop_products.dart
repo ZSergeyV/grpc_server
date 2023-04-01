@@ -113,7 +113,7 @@ Widget ProductListItem(BuildContext context, Product product) {
                       tag: product.code,
                       child: Image.network(
                         product.thumb,
-                        width: 65,
+                        width: 60,
                       ),
                     )
                   : Image.asset('assets/images/no-image.png'),

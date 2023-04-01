@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:grpc_server/bloc/categories/categories_bloc.dart';
 // import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 // import 'package:grpc_server/bloc/categories/categories_bloc.dart';
 // import 'package:grpc_server/bloc/products/products_bloc.dart';
@@ -23,6 +24,11 @@ class HomePage extends StatelessWidget {
                   lazy: false,
                   create: (BuildContext context) =>
                       SettingBloc(store: localStore)..add(ReadSettingsEvent())),
+              // BlocProvider<CategoriesBloc>(
+              //     lazy: false,
+              //     create: (BuildContext context) => CategoriesBloc(
+              //         store: localStore, httpClient: http.Client())
+              //       ..add(CategoriesFetched())),
             ],
             child: OrientationBuilder(builder: (context, orientation) {
               return SafeArea(

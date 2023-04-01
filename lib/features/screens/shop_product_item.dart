@@ -5,8 +5,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 // import 'package:grpc_server/bloc/settings/settings_bloc.dart';
 import 'package:grpc_server/core/model/products.dart';
+// import 'package:grpc_server/resources/local_store.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key});
@@ -104,6 +105,7 @@ class ImageSliderProduct extends StatelessWidget {
 Widget ProductInfo(BuildContext context, Map product) {
   const TextStyle menuTextStyle =
       TextStyle(fontSize: 20, fontWeight: FontWeight.w400);
+  // final LocalStoreSettings localStore = LocalStoreSettings();
   return Expanded(
     child: ListView(children: [
       ListTile(
@@ -146,7 +148,7 @@ Widget ProductInfo(BuildContext context, Map product) {
 Future<Map<String, dynamic>> _fetchProductInfo(int code) async {
   // SharedPreferences prefs = await SharedPreferences.getInstance();
   // String serverAdress = prefs.getString('SERVER_ADRESS') ?? '';
-  String serverAdress = '192.168.1.12:5000';
+  String serverAdress = '192.168.10.10:5000';
   //int limitProduct = prefs.getInt('LIMIT_PRODUCT') ?? 0;
 
   final response = await http.get(
