@@ -76,7 +76,35 @@ class CartPage extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                        onPressed: () => debugPrint('press'),
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            // color is applied to main screen when modal bottom screen is displayed
+                            barrierColor: Colors.greenAccent,
+                            //background color for modal bottom screen
+                            backgroundColor: Colors.yellow,
+                            //elevates modal bottom screen
+                            elevation: 10,
+                            // gives rounded corner to modal bottom screen
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            builder: (BuildContext context) {
+                              // UDE : SizedBox instead of Container for whitespaces
+                              return SizedBox(
+                                height: 200,
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const <Widget>[
+                                      Text('GeeksforGeeks'),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
                         child: const Text(
                           'ОПЛАТИТЬ',
                           style: TextStyle(color: Colors.white, fontSize: 28),
