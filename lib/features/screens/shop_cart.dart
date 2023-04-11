@@ -6,6 +6,7 @@ import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 import 'package:grpc_server/config/config.dart';
 import 'package:grpc_server/core/model/cart.dart';
 import 'package:grpc_server/features/screens/screens.dart';
+import 'package:grpc_server/features/widgets/cart_widgets.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -78,30 +79,17 @@ class CartPage extends StatelessWidget {
                     TextButton(
                         onPressed: () {
                           showModalBottomSheet(
+                            constraints:
+                                const BoxConstraints.expand(height: 600),
                             context: context,
-                            // color is applied to main screen when modal bottom screen is displayed
-                            barrierColor: Colors.greenAccent,
-                            //background color for modal bottom screen
-                            backgroundColor: Colors.yellow,
-                            //elevates modal bottom screen
                             elevation: 10,
-                            // gives rounded corner to modal bottom screen
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(15),
+                              ),
                             ),
                             builder: (BuildContext context) {
-                              // UDE : SizedBox instead of Container for whitespaces
-                              return SizedBox(
-                                height: 200,
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const <Widget>[
-                                      Text('GeeksforGeeks'),
-                                    ],
-                                  ),
-                                ),
-                              );
+                              return Payment();
                             },
                           );
                         },

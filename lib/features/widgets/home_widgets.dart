@@ -40,10 +40,12 @@ class _LeftPanelDateTimeState extends State<LeftPanelDateTime> {
     final String formattedTime = _formatDateTime(now, 'HH:mm');
     final String formattedDate = _formatDateTime(now, 'dd MMMM yyyy');
 
-    setState(() {
-      _timeString = formattedTime;
-      _dateString = formattedDate;
-    });
+    if (mounted) {
+      setState(() {
+        _timeString = formattedTime;
+        _dateString = formattedDate;
+      });
+    }
   }
 
   String _formatDateTime(DateTime dateTime, String format) {
