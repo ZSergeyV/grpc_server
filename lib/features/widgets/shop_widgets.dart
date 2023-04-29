@@ -5,8 +5,9 @@ import 'package:grpc_server/bloc/cart/cart_bloc.dart';
 import 'package:grpc_server/bloc/categories/categories_bloc.dart';
 import 'package:grpc_server/features/screens/screens.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:grpc_server/resources/local_store.dart';
-import 'package:http/http.dart' as http;
+import 'package:grpc_server/resources/api_repository.dart';
+// import 'package:grpc_server/resources/local_store.dart';
+// import 'package:http/http.dart' as http;
 
 class TopMenuShop extends StatelessWidget {
   const TopMenuShop({super.key, required this.orientation});
@@ -199,9 +200,12 @@ class LeftMenuShop extends StatelessWidget {
   Widget build(BuildContext context) {
     const TextStyle menuTextStyle =
         TextStyle(fontSize: 20, fontWeight: FontWeight.w400);
-    final LocalStoreSettings localStore = LocalStoreSettings();
+
+    // final LocalStoreSettings localStore = LocalStoreSettings();
+    final DataRepository dataRepository = DataRepository();
+
     return BlocBuilder<CategoriesBloc, CategoriesState>(
-        bloc: CategoriesBloc(store: localStore, httpClient: http.Client())
+        bloc: CategoriesBloc(repository: dataRepository)
           ..add(CategoriesFetched()),
         builder: (context, state) {
           final screenWidth = MediaQuery.of(context).size.width;
