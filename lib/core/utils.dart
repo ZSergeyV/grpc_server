@@ -6,5 +6,6 @@ enum StepsPayment {
   choosPaymentMethod,
   choosTypeBuyer,
   amountMoneyReceived,
-  payment
+  payment,
+  back
 }

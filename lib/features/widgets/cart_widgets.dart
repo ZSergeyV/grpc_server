@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:grpc_server/core/utils.dart';
 
-class Payment extends StatefulWidget {
-  const Payment({super.key});
-  static const TextStyle stylePayCaption = TextStyle(fontSize: 26);
+class Payment extends StatelessWidget {
+  Payment({super.key});
+  static const TextStyle stylePayCaption =
+      TextStyle(fontSize: 26, color: Colors.black87);
 
-  @override
-  State<Payment> createState() => _PaymentState();
-}
-
-class _PaymentState extends State<Payment> {
   final PageController controller = PageController();
+
   final Map<String, dynamic> payData = {
     'paymentType': null,
     'bayerType': null,
@@ -35,9 +32,13 @@ class _PaymentState extends State<Payment> {
         default:
           break;
       }
-      //controller.jumpTo(value)
-      controller.nextPage(
-          duration: const Duration(milliseconds: 100), curve: Curves.easeIn);
+      if (step == StepsPayment.back) {
+        controller.previousPage(
+            duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
+      } else {
+        controller.nextPage(
+            duration: const Duration(milliseconds: 100), curve: Curves.easeIn);
+      }
     }
 
     _pageChoisePaymentType() {
@@ -45,35 +46,67 @@ class _PaymentState extends State<Payment> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 25, top: 15),
-            child: Text(
-              'Выберите способ оплаты',
-              style: TextStyle(fontSize: 30),
-              textAlign: TextAlign.left,
+          Padding(
+            padding: const EdgeInsets.only(left: 25, top: 15, right: 25),
+            child: Column(
+              children: [
+                const Text(
+                  'Выберите способ оплаты',
+                  style: TextStyle(fontSize: 30),
+                  textAlign: TextAlign.left,
+                ),
+                const SizedBox(height: 20),
+                OutlinedButton.icon(
+                  onPressed: () => changePageOnPay(
+                      StepsPayment.choosPaymentMethod, CheckPaymentType.cash),
+                  icon: const Icon(
+                    Icons.money_rounded,
+                    size: 70,
+                    color: Colors.black26,
+                  ),
+                  label: Row(
+                    children: const [Text('Наличными', style: stylePayCaption)],
+                  ),
+                  style: OutlinedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)))),
+                ),
+                const SizedBox(height: 20),
+                OutlinedButton.icon(
+                  onPressed: () => changePageOnPay(
+                      StepsPayment.choosPaymentMethod, CheckPaymentType.card),
+                  icon: const Icon(
+                    Icons.credit_card_rounded,
+                    size: 70,
+                    color: Colors.black26,
+                  ),
+                  label: Row(
+                    children: const [
+                      Text('Банковской картой', style: stylePayCaption)
+                    ],
+                  ),
+                  style: OutlinedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)))),
+                ),
+                const SizedBox(height: 20),
+                OutlinedButton.icon(
+                  onPressed: () => changePageOnPay(StepsPayment.back, null),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    size: 70,
+                    color: Colors.black26,
+                  ),
+                  label: Row(
+                    children: const [Text('Назад', style: stylePayCaption)],
+                  ),
+                  style: OutlinedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)))),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 20),
-          ListTile(
-              onTap: () => changePageOnPay(
-                  StepsPayment.choosPaymentMethod, CheckPaymentType.cash),
-              style: ListTileStyle.list,
-              leading: const Icon(
-                Icons.money_rounded,
-                size: 70,
-              ),
-              title: const Text('Наличными', style: Payment.stylePayCaption),
-              minVerticalPadding: 30),
-          ListTile(
-              onTap: () => changePageOnPay(
-                  StepsPayment.choosPaymentMethod, CheckPaymentType.card),
-              leading: const Icon(
-                Icons.credit_card_rounded,
-                size: 70,
-              ),
-              title: const Text('Банковской картой',
-                  style: Payment.stylePayCaption),
-              minVerticalPadding: 30)
         ],
       );
     }
@@ -83,35 +116,54 @@ class _PaymentState extends State<Payment> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 25, top: 15),
-            child: Text(
-              'Выберите тип покупателя',
-              style: TextStyle(fontSize: 30),
-              textAlign: TextAlign.left,
+          Padding(
+            padding: const EdgeInsets.only(left: 25, top: 15, right: 25),
+            child: Column(
+              children: [
+                const Text(
+                  'Выберите тип покупателя',
+                  style: TextStyle(fontSize: 30),
+                  textAlign: TextAlign.left,
+                ),
+                const SizedBox(height: 20),
+                OutlinedButton.icon(
+                  onPressed: () => changePageOnPay(
+                      StepsPayment.choosTypeBuyer, BuyerType.person),
+                  icon: const Icon(
+                    Icons.person,
+                    size: 70,
+                    color: Colors.black26,
+                  ),
+                  label: Row(
+                    children: const [
+                      Text('Частное лицо', style: stylePayCaption)
+                    ],
+                  ),
+                  style: OutlinedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)))),
+                ),
+                const SizedBox(height: 20),
+                OutlinedButton.icon(
+                  onPressed: () => changePageOnPay(
+                      StepsPayment.choosTypeBuyer, BuyerType.juridicalPerson),
+                  icon: const Icon(
+                    Icons.business,
+                    size: 70,
+                    color: Colors.black26,
+                  ),
+                  label: Row(
+                    children: const [
+                      Text('Юридическое лицо', style: stylePayCaption)
+                    ],
+                  ),
+                  style: OutlinedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)))),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 20),
-          ListTile(
-              onTap: () => changePageOnPay(
-                  StepsPayment.choosTypeBuyer, BuyerType.person),
-              style: ListTileStyle.list,
-              leading: const Icon(
-                Icons.person,
-                size: 70,
-              ),
-              title: const Text('Частное лицо', style: Payment.stylePayCaption),
-              minVerticalPadding: 30),
-          ListTile(
-              onTap: () => changePageOnPay(
-                  StepsPayment.choosTypeBuyer, BuyerType.juridicalPerson),
-              leading: const Icon(
-                Icons.business,
-                size: 70,
-              ),
-              title: const Text('Юридическое лицо',
-                  style: Payment.stylePayCaption),
-              minVerticalPadding: 30)
+          )
         ],
       );
     }

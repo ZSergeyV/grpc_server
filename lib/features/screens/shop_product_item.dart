@@ -186,7 +186,7 @@ Widget ProductInfo(BuildContext context, Map product) {
 Future<Map<String, dynamic>> _fetchProductInfo(int code) async {
   // SharedPreferences prefs = await SharedPreferences.getInstance();
   // String serverAdress = prefs.getString('SERVER_ADRESS') ?? '';
-  String serverAdress = '172.25.48.1:5000';
+  String serverAdress = '192.168.1.105:5000';
   //int limitProduct = prefs.getInt('LIMIT_PRODUCT') ?? 0;
 
   final response = await http.get(
