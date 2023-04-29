@@ -1,11 +1,7 @@
 import 'dart:async';
-// import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:grpc_server/core/model/categories.dart';
 import 'package:grpc_server/resources/api_repository.dart';
-// import 'package:grpc_server/resources/local_store.dart';
-// import 'package:meta/meta.dart';
-// import 'package:http/http.dart' as http;
 import 'package:equatable/equatable.dart';
 
 part 'categories_event.dart';
@@ -17,8 +13,6 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   }
 
   final DataRepository repository;
-  // final http.Client httpClient;
-  // final LocalStoreSettings store;
 
   Future<void> _onCategoriesFetched(
       CategoriesFetched event, Emitter<CategoriesState> emit) async {

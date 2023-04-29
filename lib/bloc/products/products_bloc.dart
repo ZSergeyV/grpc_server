@@ -1,12 +1,7 @@
 import 'dart:async';
-// import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:grpc_server/core/model/products.dart';
-// import 'package:grpc_server/resources/api_provider.dart';
 import 'package:grpc_server/resources/api_repository.dart';
-// import 'package:grpc_server/resources/local_store.dart';
-// import 'package:meta/meta.dart';
-// import 'package:http/http.dart' as http;
 import 'package:equatable/equatable.dart';
 
 part 'products_event.dart';
@@ -17,11 +12,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     on<ProductsFetched>(_onProductsFetched);
   }
 
-//{required this.store, required this.httpClient}
-
   final DataRepository repository;
-  // final http.Client httpClient;
-  // final LocalStoreSettings store;
 
   Future<void> _onProductsFetched(
       ProductsFetched event, Emitter<ProductsState> emit) async {
@@ -31,7 +22,6 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       if (state.status == ProductsStatus.initial) {
         final products =
             await repository.getProducts(event.idCategory, productLenght);
-        // _fetchProducts(event.idCategory, productLenght);
         return emit(state.copyWith(
           status: ProductsStatus.success,
           products: products,
@@ -51,44 +41,4 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       emit(state.copyWith(status: ProductsStatus.failure));
     }
   }
-
-//   Future<List<Product>> _fetchProducts(int igCategory,
-//       [int startIndex = 0]) async {
-//     String SERVER_ADRESS = await store.getValue('SERVER_ADRESS') ?? '';
-//     int LIMIT_PRODUCT = await store.getValue('LIMIT_PRODUCT') ?? 50;
-
-//     final response = await httpClient.get(
-//       Uri.http(
-//         SERVER_ADRESS,
-//         '/api/v1/get-products',
-//         <String, String>{
-//           'category-code': igCategory.toString(),
-//           'skip': '$startIndex',
-//           'count': '$LIMIT_PRODUCT'
-//         },
-//       ),
-//     );
-//     if (response.statusCode == 200) {
-//       final body = json.decode(response.body) as List;
-//       return body.map((dynamic json) {
-//         final map = json as Map<String, dynamic>;
-//         final urlThumbImage = map['thumb'] != ''
-//             ? 'http://$SERVER_ADRESS/static/images/thumbnail/${map['thumb']}'
-//             : '';
-//         return Product(
-//           code: map['Code'] ?? 0,
-//           idCategory: igCategory,
-//           name: map['name'] ?? '',
-//           price: map['price']!.toDouble() ?? 0,
-//           quantityStock: map['quantity_stock'] ?? 0,
-//           quantityStore: map['quantity_store'] ?? 0,
-//           storageCell: (map['storage_cell'] ?? '').replaceAll('\n', ''),
-//           storageCellStock:
-//               (map['storage_cell_stock'] ?? '').replaceAll('\n', ''),
-//           thumb: urlThumbImage,
-//         );
-//       }).toList();
-//     }
-//     throw Exception('Ошибка получения товаров');
-//   }
 }
