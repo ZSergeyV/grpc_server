@@ -65,4 +65,34 @@ class DataProvider {
     }
     throw Exception('error fetching posts');
   }
+
+  Future<Map<String, dynamic>> fetchProductInfo(int code) async {
+    final String SERVER_ADRESS = await store.getValue('SERVER_ADRESS');
+
+    final response = await http.get(
+      Uri.http(
+        SERVER_ADRESS,
+        '/api/v2/product',
+        <String, String>{
+          'code': code.toString(),
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final body = json.decode(response.body);
+      // final List<dynamic> listImages = body!['images'];
+      // Image img;
+
+      for (int index = 0; index <= body!['images'].length - 1; index++) {
+        //   final img = await _fetchImage(listImages[index]);
+        //   // .then((value) => body!['images'][index] = value);
+        body!['images'][index] =
+            'http://$SERVER_ADRESS${body!['images'][index]}';
+      }
+
+      return body;
+    }
+    throw Exception('Ошибка получения данных товара');
+  }
 }

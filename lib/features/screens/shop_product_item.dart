@@ -1,13 +1,10 @@
-import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grpc_server/bloc/cart/cart_bloc.dart';
-// import 'package:grpc_server/bloc/settings/settings_bloc.dart';
 import 'package:grpc_server/core/model/products.dart';
-// import 'package:grpc_server/resources/local_store.dart';
-import 'package:http/http.dart' as http;
+import 'package:grpc_server/resources/api_provider.dart';
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key});
@@ -16,7 +13,11 @@ class ProductPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Product _product =
         ModalRoute.of(context)!.settings.arguments as Product;
+
+    final DataProvider provider = DataProvider();
+
     var _cartBloc = context.watch<CartBloc>();
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 97, 97, 97),
@@ -28,7 +29,7 @@ class ProductPage extends StatelessWidget {
           ),
         ),
         body: FutureBuilder<Map<String, dynamic>>(
-            future: _fetchProductInfo(_product.code),
+            future: provider.fetchProductInfo(_product.code),
             builder:
                 (context, AsyncSnapshot<Map<String, dynamic>> productInfo) {
               if (productInfo.hasData) {
@@ -76,7 +77,7 @@ class ProductPage extends StatelessWidget {
 }
 
 class ImageSliderProduct extends StatelessWidget {
-  ImageSliderProduct({super.key, required this.paths});
+  const ImageSliderProduct({super.key, required this.paths});
   final List paths;
 
   @override
@@ -183,37 +184,7 @@ Widget ProductInfo(BuildContext context, Map product) {
   );
 }
 
-Future<Map<String, dynamic>> _fetchProductInfo(int code) async {
-  // SharedPreferences prefs = await SharedPreferences.getInstance();
-  // String serverAdress = prefs.getString('SERVER_ADRESS') ?? '';
-  String serverAdress = '192.168.10.3:5000';
-  //int limitProduct = prefs.getInt('LIMIT_PRODUCT') ?? 0;
 
-  final response = await http.get(
-    Uri.http(
-      serverAdress,
-      '/api/v2/product',
-      <String, String>{
-        'code': code.toString(),
-      },
-    ),
-  );
-
-  if (response.statusCode == 200) {
-    final body = json.decode(response.body);
-    // final List<dynamic> listImages = body!['images'];
-    // Image img;
-
-    for (int index = 0; index <= body!['images'].length - 1; index++) {
-      //   final img = await _fetchImage(listImages[index]);
-      //   // .then((value) => body!['images'][index] = value);
-      body!['images'][index] = 'http://$serverAdress${body!['images'][index]}';
-    }
-
-    return body;
-  }
-  throw Exception('Ошибка получения данных товара');
-}
 
 // Future<Image> _fetchImage(String path) async {
 //   // SharedPreferences prefs = await SharedPreferences.getInstance();

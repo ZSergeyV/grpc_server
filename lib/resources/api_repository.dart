@@ -10,4 +10,7 @@ class DataRepository {
 
   Future<List<Categories>> getCategories([int startIndex = 0]) =>
       provider.fetchCategories(startIndex);
+
+  Future<Map<String, dynamic>> getProductInfo(int code) =>
+      provider.fetchProductInfo(code);
 }

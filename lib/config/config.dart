@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:grpc_server/features/screens/screens.dart';
 
-const String SERVER_ADRESS = '192.168.10.14:5000';
-const int LIMIT_PRODUCT = 50;
+// const String SERVER_ADRESS = '192.168.10.14:5000';
+// const int LIMIT_PRODUCT = 50;
 
 const TextStyle PRODUCT_TEXT_STYLE = TextStyle(
   fontSize: 18,
