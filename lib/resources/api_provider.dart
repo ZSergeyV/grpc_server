@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class DataProvider {
   final LocalStoreSettings store = LocalStoreSettings();
 
-  Future<List<Product>> fetchProducts(int igCategory,
+  Future<List<Product>> fetchProducts(int idCategory,
       [int startIndex = 0]) async {
     String SERVER_ADRESS = await store.getValue('SERVER_ADRESS') ?? '';
     int LIMIT_PRODUCT = await store.getValue('LIMIT_PRODUCT') ?? 50;
@@ -16,7 +16,7 @@ class DataProvider {
         SERVER_ADRESS,
         '/api/v1/get-products',
         <String, String>{
-          'category-code': igCategory.toString(),
+          'category-code': idCategory.toString(),
           'skip': '$startIndex',
           'count': '$LIMIT_PRODUCT'
         },
@@ -31,7 +31,7 @@ class DataProvider {
             : '';
         return Product(
           code: map['Code'] ?? 0,
-          idCategory: igCategory,
+          idCategory: idCategory,
           name: map['name'] ?? '',
           price: map['price']!.toDouble() ?? 0,
           quantityStock: map['quantity_stock'] ?? 0,
