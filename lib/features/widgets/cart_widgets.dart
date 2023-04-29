@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:grpc_server/core/utils.dart';
 
 class Payment extends StatelessWidget {
@@ -16,11 +17,6 @@ class Payment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // @override
-    // void initState() {
-    //   super.initState();
-    // }
-
     void changePageOnPay(StepsPayment step, dynamic param) {
       switch (step) {
         case StepsPayment.choosPaymentMethod:
@@ -168,13 +164,85 @@ class Payment extends StatelessWidget {
       );
     }
 
+    _pageamountMoneyReceived() {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 25, top: 15, right: 25),
+            child: Column(
+              children: [
+                const Text(
+                  'Сумма к оплате',
+                  style: TextStyle(fontSize: 30),
+                  textAlign: TextAlign.left,
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  decoration:
+                      const InputDecoration(border: OutlineInputBorder()),
+                  style: stylePayCaption,
+                ),
+                const SizedBox(height: 20),
+                OutlinedButton(
+                  onPressed: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    changePageOnPay(
+                        StepsPayment.choosTypeBuyer, BuyerType.juridicalPerson);
+                  },
+                  style: OutlinedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8))),
+                      backgroundColor: Colors.green),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text('ОПЛАТИТЬ',
+                          style: TextStyle(fontSize: 26, color: Colors.white)),
+                      SizedBox(
+                        height: 70,
+                        width: 1,
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                OutlinedButton.icon(
+                  onPressed: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    changePageOnPay(StepsPayment.back, null);
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    size: 70,
+                    color: Colors.black26,
+                  ),
+                  label: Row(
+                    children: const [Text('Назад', style: stylePayCaption)],
+                  ),
+                  style: OutlinedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8)))),
+                ),
+              ],
+            ),
+          )
+        ],
+      );
+    }
+
     return PageView(
       controller: controller,
       physics: const NeverScrollableScrollPhysics(),
       children: <Widget>[
         _pageChoiseBayerType(),
         _pageChoisePaymentType(),
-
+        _pageamountMoneyReceived(),
         // Container(
         //   color: Colors.deepPurple,
         // ),
