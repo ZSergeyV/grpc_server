@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:grpc_server/core/model/categories.dart';
 import 'package:grpc_server/core/model/products.dart';
 import 'package:grpc_server/resources/local_store.dart';
 import 'package:http/http.dart' as http;
@@ -44,5 +45,24 @@ class DataProvider {
       }).toList();
     }
     throw Exception('Ошибка получения товаров');
+  }
+
+  Future<List<Categories>> fetchCategories([int startIndex = 0]) async {
+    final String SERVER_ADRESS = await store.getValue('SERVER_ADRESS');
+
+    final response = await http.Client().get(
+      Uri.http(SERVER_ADRESS, '/api/v1/get-categories'),
+    );
+    if (response.statusCode == 200) {
+      final body = json.decode(response.body) as List;
+      return body.map((dynamic json) {
+        final map = json as Map<String, dynamic>;
+        return Categories(
+          id: map['Code'] as int,
+          title: map['Description'] as String,
+        );
+      }).toList();
+    }
+    throw Exception('error fetching posts');
   }
 }

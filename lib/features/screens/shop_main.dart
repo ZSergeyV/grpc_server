@@ -5,15 +5,15 @@ import 'package:grpc_server/bloc/categories/categories_bloc.dart';
 import 'package:grpc_server/features/screens/screens.dart';
 import 'package:grpc_server/features/widgets/shop_widgets.dart';
 import 'package:grpc_server/resources/api_repository.dart';
-import 'package:grpc_server/resources/local_store.dart';
-import 'package:http/http.dart' as http;
+// import 'package:grpc_server/resources/local_store.dart';
+// import 'package:http/http.dart' as http;
 
 class MainShopPage extends StatelessWidget {
   const MainShopPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final LocalStoreSettings localStore = LocalStoreSettings();
+    // final LocalStoreSettings localStore = LocalStoreSettings();
     final DataRepository dataRepository = DataRepository();
 
     return Scaffold(
@@ -23,9 +23,9 @@ class MainShopPage extends StatelessWidget {
             providers: [
               BlocProvider<CategoriesBloc>(
                   lazy: false,
-                  create: (BuildContext context) => CategoriesBloc(
-                      store: localStore, httpClient: http.Client())
-                    ..add(CategoriesFetched())),
+                  create: (BuildContext context) =>
+                      CategoriesBloc(repository: dataRepository)
+                        ..add(CategoriesFetched())),
               BlocProvider<ProductsBloc>(
                   lazy: false,
                   create: (_) => ProductsBloc(repository: dataRepository)
