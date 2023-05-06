@@ -51,7 +51,7 @@ class CartPage extends StatelessWidget {
                             itemBuilder: (BuildContext context, int index) {
                               return Dismissible(
                                 background: Container(
-                                  color: Color.fromARGB(255, 206, 35, 23),
+                                  color: const Color.fromARGB(255, 206, 35, 23),
                                 ),
                                 key: ValueKey<int>(
                                     state.items[index].product.code),
