@@ -22,29 +22,45 @@ class CartPage extends StatelessWidget {
         ),
         elevation: 3,
         actions: [
-          IconButton(
-              onPressed: () => _showDialogClearCart(context),
-              icon: const Icon(
-                Icons.delete_outline,
-                color: Color(0xFFE83333),
-                size: 30,
-              ))
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: IconButton(
+                onPressed: () => _showDialogClearCart(context),
+                icon: const Icon(
+                  Icons.delete_outline,
+                  color: Color(0xFFE83333),
+                  size: 36,
+                )),
+          )
         ],
       ),
       body: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+        double dividerWidth = MediaQuery.of(context).size.width / 2.2;
+
         return SafeArea(
             child: Column(
           children: [
             Expanded(
                 child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.only(
+                        left: 12, right: 12, bottom: 0, top: 12),
                     child: Builder(builder: (context) {
                       switch (state.status) {
                         case CartStatus.initial:
                           return ListView.builder(
                             itemBuilder: (BuildContext context, int index) {
-                              return CartProductItem(
-                                  state.items[index], true, context);
+                              return Dismissible(
+                                background: Container(
+                                  color: Color.fromARGB(255, 206, 35, 23),
+                                ),
+                                key: ValueKey<int>(
+                                    state.items[index].product.code),
+                                child: CartProductItem(
+                                    state.items[index], true, context),
+                                onDismissed: (direction) => context
+                                    .read<CartBloc>()
+                                    .add(DeleteProduct(state.items[index])),
+                              );
                             },
                             itemCount: state.items.length,
                           );
@@ -59,50 +75,94 @@ class CartPage extends StatelessWidget {
                       }
                     }))),
             Container(
-                height: 60,
-                color: const Color.fromARGB(255, 5, 128, 46),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                height: 86,
+                // color: const Color.fromARGB(255, 5, 128, 46),
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 5, 128, 46),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(40.0),
+                    topLeft: Radius.circular(40.0),
+                  ),
+                ),
+                child: Column(
                   children: [
                     Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(16, 0, 8, 0),
-                      child: Text(
-                        'ИТОГО: ${state.totalPrice.toInt() == state.totalPrice ? state.totalPrice.toInt() : state.totalPrice} р.',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: Colors.white,
-                              fontSize: 32,
-                              fontWeight: FontWeight.w300,
-                            ),
+                      padding: const EdgeInsets.only(top: 18),
+                      child: SizedBox(
+                        child: Divider(
+                          color: Colors.white,
+                          height: 2.0,
+                          thickness: 4,
+                          indent: dividerWidth,
+                          endIndent: dividerWidth,
+                        ),
                       ),
                     ),
-                    TextButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            constraints:
-                                const BoxConstraints.expand(height: 600),
-                            context: context,
-                            elevation: 10,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(15),
-                              ),
-                            ),
-                            builder: (BuildContext context) {
-                              return Payment();
+                    Row(
+                      // mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Padding(
+                        //   padding:
+                        //       const EdgeInsetsDirectional.fromSTEB(32, 0, 0, 0),
+                        //   child: Text(
+                        //     'Оплатить: ${state.totalPrice.toInt() == state.totalPrice ? state.totalPrice.toInt() : state.totalPrice} р.',
+                        //     style:
+                        //         Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        //               color: Colors.white,
+                        //               fontSize: 32,
+                        //               fontWeight: FontWeight.w300,
+                        //             ),
+                        //   ),
+                        // ),
+                        TextButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                constraints:
+                                    const BoxConstraints.expand(height: 600),
+                                context: context,
+                                elevation: 10,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(40),
+                                  ),
+                                ),
+                                builder: (BuildContext context) {
+                                  return Payment();
+                                },
+                              );
                             },
-                          );
-                        },
-                        child: const Text(
-                          'ОПЛАТИТЬ',
-                          style: TextStyle(color: Colors.white, fontSize: 28),
-                        ))
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 0),
+                              child: Text(
+                                'Оплатить: ${state.totalPrice.toInt() == state.totalPrice ? state.totalPrice.toInt() : state.totalPrice} р.',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                              ),
+
+                              // Text(
+                              //   'ОПЛАТИТЬ',
+                              //   style: TextStyle(
+                              //       color: Colors.white, fontSize: 28),
+                              // ),
+                            ))
+                      ],
+                    ),
                   ],
                 )),
           ],
         ));
       }),
+      // bottomSheet: Container(
+      //   height: 100,
+      //   color: Colors.cyan,
+      // ),
     );
   }
 }
@@ -145,7 +205,17 @@ class Cart extends StatelessWidget {
                             case CartStatus.initial:
                               return ListView.builder(
                                 itemBuilder: (BuildContext context, int index) {
-                                  return CartProductItem(state.items[index]);
+                                  return Dismissible(
+                                    background: Container(
+                                      color: Colors.red,
+                                    ),
+                                    key: ValueKey<int>(
+                                        state.items[index].product.code),
+                                    child: CartProductItem(state.items[index]),
+                                    onDismissed: (direction) => context
+                                        .read<CartBloc>()
+                                        .add(DeleteProduct(state.items[index])),
+                                  );
                                 },
                                 itemCount: state.items.length,
                                 //ProductListItem(product: state.products[index])
@@ -373,25 +443,28 @@ Widget CartProductItem(CartItem item,
                   )),
                   extendet
                       ? SizedBox(
-                          width: 120,
+                          width: 132,
                           height: 45,
-                          child: CartStepperInt(
-                            size: 33,
-                            value: item.count,
-                            stepper: 1,
-                            style: const CartStepperStyle(
-                                activeForegroundColor:
-                                    Color.fromARGB(255, 255, 255, 255),
-                                radius: Radius.circular(25)),
-                            didChangeCount: (int value) {
-                              if (value <= 0) {
-                                _showDialogDeleteProduct(context!, item);
-                              } else {
-                                context!
-                                    .read<CartBloc>()
-                                    .add(ChangeCountProduct(item, value));
-                              }
-                            },
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 12),
+                            child: CartStepperInt(
+                              size: 33,
+                              value: item.count,
+                              stepper: 1,
+                              style: const CartStepperStyle(
+                                  activeForegroundColor:
+                                      Color.fromARGB(255, 255, 255, 255),
+                                  radius: Radius.circular(25)),
+                              didChangeCount: (int value) {
+                                if (value <= 0) {
+                                  _showDialogDeleteProduct(context!, item);
+                                } else {
+                                  context!
+                                      .read<CartBloc>()
+                                      .add(ChangeCountProduct(item, value));
+                                }
+                              },
+                            ),
                           ))
                       : noWidget,
                 ],
@@ -433,10 +506,13 @@ Widget CartProductItem(CartItem item,
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text(
-                          'Всего: ${item.price.toInt()} р.',
-                          style: CART_TEXT_STYLE.copyWith(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: Text(
+                            'Всего: ${item.price.toInt()} р.',
+                            style: CART_TEXT_STYLE.copyWith(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
                         )
                       ],
                     ),

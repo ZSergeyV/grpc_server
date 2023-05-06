@@ -51,7 +51,6 @@ class _ListProductsState extends State<ListProducts> {
 
   @override
   Widget build(BuildContext context) {
-    //final ProductsState stateBlocProduct = context.read<ProductsBloc>().state;
     return BlocBuilder<ProductsBloc, ProductsState>(builder: (context, state) {
       return Container(
         width: MediaQuery.of(context).size.width *
