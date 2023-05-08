@@ -74,88 +74,104 @@ class CartPage extends StatelessWidget {
                           return const SizedBox();
                       }
                     }))),
-            Container(
-                height: 86,
-                // color: const Color.fromARGB(255, 5, 128, 46),
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 5, 128, 46),
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(40.0),
-                    topLeft: Radius.circular(40.0),
+            GestureDetector(
+              onPanStart: (details) => showModalBottomSheet(
+                constraints: const BoxConstraints.expand(height: 600),
+                backgroundColor: Colors.white,
+                context: context,
+                elevation: 10,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(40),
                   ),
                 ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 18),
-                      child: SizedBox(
-                        child: Divider(
-                          color: Colors.white,
-                          height: 2.0,
-                          thickness: 4,
-                          indent: dividerWidth,
-                          endIndent: dividerWidth,
+                builder: (BuildContext context) {
+                  return Payment();
+                },
+              ),
+              child: Container(
+                  height: 86,
+                  // color: const Color.fromARGB(255, 5, 128, 46),
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 5, 128, 46),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(40.0),
+                      topLeft: Radius.circular(40.0),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 18),
+                        child: SizedBox(
+                          child: Divider(
+                            color: Colors.white,
+                            height: 2.0,
+                            thickness: 4,
+                            indent: dividerWidth,
+                            endIndent: dividerWidth,
+                          ),
                         ),
                       ),
-                    ),
-                    Row(
-                      // mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Padding(
-                        //   padding:
-                        //       const EdgeInsetsDirectional.fromSTEB(32, 0, 0, 0),
-                        //   child: Text(
-                        //     'Оплатить: ${state.totalPrice.toInt() == state.totalPrice ? state.totalPrice.toInt() : state.totalPrice} р.',
-                        //     style:
-                        //         Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        //               color: Colors.white,
-                        //               fontSize: 32,
-                        //               fontWeight: FontWeight.w300,
-                        //             ),
-                        //   ),
-                        // ),
-                        TextButton(
-                            onPressed: () {
-                              showModalBottomSheet(
-                                constraints:
-                                    const BoxConstraints.expand(height: 600),
-                                context: context,
-                                elevation: 10,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(40),
-                                  ),
-                                ),
-                                builder: (BuildContext context) {
-                                  return Payment();
-                                },
-                              );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 0),
-                              child: Text(
-                                'Оплатить: ${state.totalPrice.toInt() == state.totalPrice ? state.totalPrice.toInt() : state.totalPrice} р.',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(
-                                      color: Colors.white,
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.w300,
+                      Row(
+                        // mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Padding(
+                          //   padding:
+                          //       const EdgeInsetsDirectional.fromSTEB(32, 0, 0, 0),
+                          //   child: Text(
+                          //     'Оплатить: ${state.totalPrice.toInt() == state.totalPrice ? state.totalPrice.toInt() : state.totalPrice} р.',
+                          //     style:
+                          //         Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          //               color: Colors.white,
+                          //               fontSize: 32,
+                          //               fontWeight: FontWeight.w300,
+                          //             ),
+                          //   ),
+                          // ),
+                          TextButton(
+                              onPressed: () {
+                                showModalBottomSheet(
+                                  constraints:
+                                      const BoxConstraints.expand(height: 600),
+                                  context: context,
+                                  elevation: 10,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(40),
                                     ),
-                              ),
+                                  ),
+                                  builder: (BuildContext context) {
+                                    return Payment();
+                                  },
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 0),
+                                child: Text(
+                                  'Оплатить: ${state.totalPrice.toInt() == state.totalPrice ? state.totalPrice.toInt() : state.totalPrice} р.',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.copyWith(
+                                        color: Colors.white,
+                                        fontSize: 32,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                ),
 
-                              // Text(
-                              //   'ОПЛАТИТЬ',
-                              //   style: TextStyle(
-                              //       color: Colors.white, fontSize: 28),
-                              // ),
-                            ))
-                      ],
-                    ),
-                  ],
-                )),
+                                // Text(
+                                //   'ОПЛАТИТЬ',
+                                //   style: TextStyle(
+                                //       color: Colors.white, fontSize: 28),
+                                // ),
+                              ))
+                        ],
+                      ),
+                    ],
+                  )),
+            ),
           ],
         ));
       }),
