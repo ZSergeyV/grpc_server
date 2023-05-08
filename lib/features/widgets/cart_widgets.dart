@@ -255,12 +255,6 @@ class Payment extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      // Image.asset(
-                      //   'assets/images/money.png',
-                      //   fit: BoxFit.cover,
-                      //   width: 200,
-                      // ),
-
                       OutlinedButton(
                         onPressed: () {},
                         style: OutlinedButton.styleFrom(
@@ -285,26 +279,6 @@ class Payment extends StatelessWidget {
                         child: Image.asset('assets/images/credit_card.png',
                             width: 200, height: 150, fit: BoxFit.cover),
                       ),
-                      // Material(
-                      //   borderRadius:
-                      //       const BorderRadius.all(Radius.circular(10)),
-                      //   elevation: 2,
-                      //   color: Colors.white,
-                      //   child: InkWell(
-                      //     onTap: () {}, // needed
-                      //     child: Image.asset(
-                      //       "assets/images/money.png",
-                      //       width: 250,
-                      //       fit: BoxFit.cover,
-                      //     ),
-                      //   ),
-                      // ),
-
-                      // Image.asset(
-                      //   'assets/images/credit_card.png',
-                      //   fit: BoxFit.cover,
-                      //   width: 200,
-                      // ),
                     ],
                   ),
                 ),
