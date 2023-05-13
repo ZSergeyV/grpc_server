@@ -37,6 +37,23 @@ class CartPage extends StatelessWidget {
       body: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
         double dividerWidth = MediaQuery.of(context).size.width / 2.2;
 
+        Future showTypeMethodsPay() {
+          return showModalBottomSheet(
+            constraints: const BoxConstraints.expand(height: 520),
+            backgroundColor: Colors.white,
+            context: context,
+            elevation: 10,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(40),
+              ),
+            ),
+            builder: (BuildContext context) {
+              return Payment();
+            },
+          );
+        }
+
         return SafeArea(
             child: Column(
           children: [
@@ -75,20 +92,7 @@ class CartPage extends StatelessWidget {
                       }
                     }))),
             GestureDetector(
-              onPanStart: (details) => showModalBottomSheet(
-                constraints: const BoxConstraints.expand(height: 600),
-                backgroundColor: Colors.white,
-                context: context,
-                elevation: 10,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(40),
-                  ),
-                ),
-                builder: (BuildContext context) {
-                  return Payment();
-                },
-              ),
+              onPanStart: (details) => showTypeMethodsPay(),
               child: Container(
                   height: 86,
                   // color: const Color.fromARGB(255, 5, 128, 46),
@@ -117,36 +121,8 @@ class CartPage extends StatelessWidget {
                         // mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // Padding(
-                          //   padding:
-                          //       const EdgeInsetsDirectional.fromSTEB(32, 0, 0, 0),
-                          //   child: Text(
-                          //     'Оплатить: ${state.totalPrice.toInt() == state.totalPrice ? state.totalPrice.toInt() : state.totalPrice} р.',
-                          //     style:
-                          //         Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          //               color: Colors.white,
-                          //               fontSize: 32,
-                          //               fontWeight: FontWeight.w300,
-                          //             ),
-                          //   ),
-                          // ),
                           TextButton(
-                              onPressed: () {
-                                showModalBottomSheet(
-                                  constraints:
-                                      const BoxConstraints.expand(height: 600),
-                                  context: context,
-                                  elevation: 10,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                      top: Radius.circular(40),
-                                    ),
-                                  ),
-                                  builder: (BuildContext context) {
-                                    return Payment();
-                                  },
-                                );
-                              },
+                              onPressed: () => showTypeMethodsPay(),
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 0),
                                 child: Text(
@@ -160,12 +136,6 @@ class CartPage extends StatelessWidget {
                                         fontWeight: FontWeight.w300,
                                       ),
                                 ),
-
-                                // Text(
-                                //   'ОПЛАТИТЬ',
-                                //   style: TextStyle(
-                                //       color: Colors.white, fontSize: 28),
-                                // ),
                               ))
                         ],
                       ),

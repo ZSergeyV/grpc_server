@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:grpc_server/core/utils.dart';
 
 class Payment extends StatelessWidget {
@@ -7,229 +6,96 @@ class Payment extends StatelessWidget {
   static const TextStyle stylePayCaption =
       TextStyle(fontSize: 26, color: Colors.black87);
 
-  final PageController controller = PageController(viewportFraction: 0.9);
+  final PageController controller = PageController(viewportFraction: 0.82);
 
-  final Map<String, dynamic> payData = {
-    'paymentType': null,
-    'bayerType': null,
-    'checkAmount': 0
-  };
+  // final Map<String, dynamic> payData = {
+  //   'paymentType': null,
+  //   'bayerType': null,
+  //   'checkAmount': 0
+  // };
 
   @override
   Widget build(BuildContext context) {
-    // void changePageOnPay(StepsPayment step, dynamic param) {
-    //   switch (step) {
-    //     case StepsPayment.choosPaymentMethod:
-    //       payData['paymentType'] = param;
-    //       break;
-    //     case StepsPayment.choosTypeBuyer:
-    //       payData['bayerType'] = param;
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    //   if (step == StepsPayment.back) {
-    //     controller.previousPage(
-    //         duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
-    //   } else {
-    //     controller.nextPage(
-    //         duration: const Duration(milliseconds: 100), curve: Curves.easeIn);
-    //   }
-    // }
+    double marginTopStack = 55;
 
-    // _pageChoisePaymentType() {
-    //   return Column(
-    //     mainAxisAlignment: MainAxisAlignment.start,
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       Padding(
-    //         padding: const EdgeInsets.only(left: 25, top: 15, right: 25),
-    //         child: Column(
-    //           children: [
-    //             const Text(
-    //               'Выберите способ оплаты',
-    //               style: TextStyle(fontSize: 30),
-    //               textAlign: TextAlign.left,
-    //             ),
-    //             const SizedBox(height: 20),
-    //             OutlinedButton.icon(
-    //               onPressed: () => changePageOnPay(
-    //                   StepsPayment.choosPaymentMethod, CheckPaymentType.cash),
-    //               icon: const Icon(
-    //                 Icons.money_rounded,
-    //                 size: 70,
-    //                 color: Colors.black26,
-    //               ),
-    //               label: Row(
-    //                 children: const [Text('Наличными', style: stylePayCaption)],
-    //               ),
-    //               style: OutlinedButton.styleFrom(
-    //                   shape: const RoundedRectangleBorder(
-    //                       borderRadius: BorderRadius.all(Radius.circular(8)))),
-    //             ),
-    //             const SizedBox(height: 20),
-    //             OutlinedButton.icon(
-    //               onPressed: () => changePageOnPay(
-    //                   StepsPayment.choosPaymentMethod, CheckPaymentType.card),
-    //               icon: const Icon(
-    //                 Icons.credit_card_rounded,
-    //                 size: 70,
-    //                 color: Colors.black26,
-    //               ),
-    //               label: Row(
-    //                 children: const [
-    //                   Text('Банковской картой', style: stylePayCaption)
-    //                 ],
-    //               ),
-    //               style: OutlinedButton.styleFrom(
-    //                   shape: const RoundedRectangleBorder(
-    //                       borderRadius: BorderRadius.all(Radius.circular(8)))),
-    //             ),
-    //             const SizedBox(height: 20),
-    //             OutlinedButton.icon(
-    //               onPressed: () => changePageOnPay(StepsPayment.back, null),
-    //               icon: const Icon(
-    //                 Icons.arrow_back,
-    //                 size: 70,
-    //                 color: Colors.black26,
-    //               ),
-    //               label: Row(
-    //                 children: const [Text('Назад', style: stylePayCaption)],
-    //               ),
-    //               style: OutlinedButton.styleFrom(
-    //                   shape: const RoundedRectangleBorder(
-    //                       borderRadius: BorderRadius.all(Radius.circular(8)))),
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //     ],
-    //   );
-    // }
-
-    // _pageChoiseBayerType() {
-    //   return Column(
-    //     mainAxisAlignment: MainAxisAlignment.start,
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       Padding(
-    //         padding: const EdgeInsets.only(left: 25, top: 15, right: 25),
-    //         child: Column(
-    //           children: [
-    //             // OutlinedButton.icon(
-    //             //   onPressed: () => changePageOnPay(
-    //             //       StepsPayment.choosTypeBuyer, BuyerType.person),
-    //             //   icon: const Icon(
-    //             //     Icons.person,
-    //             //     size: 70,
-    //             //     color: Colors.black26,
-    //             //   ),
-    //             //   label: Row(
-    //             //     children: const [
-    //             //       Text('Частное лицо', style: stylePayCaption)
-    //             //     ],
-    //             //   ),
-    //             //   style: OutlinedButton.styleFrom(
-    //             //       shape: const RoundedRectangleBorder(
-    //             //           borderRadius: BorderRadius.all(Radius.circular(8)))),
-    //             // ),
-
-    //             const SizedBox(height: 20),
-    //             OutlinedButton.icon(
-    //               onPressed: () => changePageOnPay(
-    //                   StepsPayment.choosTypeBuyer, BuyerType.juridicalPerson),
-    //               icon: const Icon(
-    //                 Icons.business,
-    //                 size: 70,
-    //                 color: Colors.black26,
-    //               ),
-    //               label: Row(
-    //                 children: const [
-    //                   Text('Юридическое лицо', style: stylePayCaption)
-    //                 ],
-    //               ),
-    //               style: OutlinedButton.styleFrom(
-    //                   shape: const RoundedRectangleBorder(
-    //                       borderRadius: BorderRadius.all(Radius.circular(8)))),
-    //             ),
-    //           ],
-    //         ),
-    //       )
-    //     ],
-    //   );
-    // }
-
-    // _pageamountMoneyReceived() {
-    //   return Column(
-    //     mainAxisAlignment: MainAxisAlignment.start,
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       Padding(
-    //         padding: const EdgeInsets.only(left: 25, top: 15, right: 25),
-    //         child: Column(
-    //           children: [
-    //             const Text(
-    //               'Сумма к оплате',
-    //               style: TextStyle(fontSize: 30),
-    //               textAlign: TextAlign.left,
-    //             ),
-    //             const SizedBox(height: 20),
-    //             TextField(
-    //               keyboardType: TextInputType.number,
-    //               inputFormatters: <TextInputFormatter>[
-    //                 FilteringTextInputFormatter.digitsOnly
-    //               ],
-    //               decoration:
-    //                   const InputDecoration(border: OutlineInputBorder()),
-    //               style: stylePayCaption,
-    //             ),
-    //             const SizedBox(height: 20),
-    //             OutlinedButton(
-    //               onPressed: () {
-    //                 FocusManager.instance.primaryFocus?.unfocus();
-    //                 changePageOnPay(
-    //                     StepsPayment.choosTypeBuyer, BuyerType.juridicalPerson);
-    //               },
-    //               style: OutlinedButton.styleFrom(
-    //                   shape: const RoundedRectangleBorder(
-    //                       borderRadius: BorderRadius.all(Radius.circular(8))),
-    //                   backgroundColor: Colors.green),
-    //               child: Row(
-    //                 mainAxisAlignment: MainAxisAlignment.center,
-    //                 children: const [
-    //                   Text('ОПЛАТИТЬ',
-    //                       style: TextStyle(fontSize: 26, color: Colors.white)),
-    //                   SizedBox(
-    //                     height: 70,
-    //                     width: 1,
-    //                   )
-    //                 ],
-    //               ),
-    //             ),
-    //             const SizedBox(height: 20),
-    //             OutlinedButton.icon(
-    //               onPressed: () {
-    //                 FocusManager.instance.primaryFocus?.unfocus();
-    //                 changePageOnPay(StepsPayment.back, null);
-    //               },
-    //               icon: const Icon(
-    //                 Icons.arrow_back,
-    //                 size: 70,
-    //                 color: Colors.black26,
-    //               ),
-    //               label: Row(
-    //                 children: const [Text('Назад', style: stylePayCaption)],
-    //               ),
-    //               style: OutlinedButton.styleFrom(
-    //                   shape: const RoundedRectangleBorder(
-    //                       borderRadius: BorderRadius.all(Radius.circular(8)))),
-    //             ),
-    //           ],
-    //         ),
-    //       )
-    //     ],
-    //   );
-    // }
+    Widget pagePayBuyer(BuyerType buyerType) {
+      String captionPage = buyerType == BuyerType.person
+          ? 'Физическое лицо'
+          : 'Юридическое лицо';
+      String imageName =
+          buyerType == BuyerType.person ? 'buyer.png' : 'legal-buyer.png';
+      return Padding(
+        padding: const EdgeInsets.all(20),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(20)),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 8,
+                left: MediaQuery.of(context).size.width / 3.7,
+                child: Text(
+                  captionPage,
+                  style: const TextStyle(
+                      fontSize: 30, color: Color.fromARGB(255, 104, 104, 104)),
+                ),
+              ),
+              Positioned(
+                right: 40,
+                top: marginTopStack,
+                height: 350,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    OutlinedButton(
+                        onPressed: () {},
+                        style: OutlinedButton.styleFrom(
+                          shape: ContinuousRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          side: const BorderSide(
+                            color: Color.fromARGB(255, 211, 211, 211),
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.money_rounded,
+                          size: 165,
+                          color: Color.fromARGB(255, 182, 141, 27),
+                        )
+                        //   Image.asset('assets/images/money.png',
+                        //       width: 200, height: 150, fit: BoxFit.fitHeight),
+                        ),
+                    OutlinedButton(
+                        onPressed: () {},
+                        style: OutlinedButton.styleFrom(
+                          shape: ContinuousRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          side: const BorderSide(
+                            color: Color.fromARGB(255, 211, 211, 211),
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.credit_card,
+                          size: 165,
+                          color: Color.fromARGB(255, 41, 43, 175),
+                        )
+                        //   Image.asset('assets/images/credit_card.png',
+                        //       width: 200, height: 150, fit: BoxFit.cover),
+                        ),
+                  ],
+                ),
+              ),
+              Positioned(
+                left: 24,
+                top: marginTopStack,
+                height: 350,
+                child:
+                    Image.asset('assets/images/$imageName', fit: BoxFit.cover),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
     return Column(
       children: [
@@ -238,7 +104,7 @@ class Payment extends StatelessWidget {
         ),
         const Text(
           'Выберите тип покупателя и способ оплаты',
-          style: TextStyle(fontSize: 30),
+          style: TextStyle(fontSize: 32),
           textAlign: TextAlign.left,
         ),
         Expanded(
@@ -246,57 +112,8 @@ class Payment extends StatelessWidget {
             controller: controller,
             physics: const AlwaysScrollableScrollPhysics(),
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      OutlinedButton(
-                        onPressed: () {},
-                        style: OutlinedButton.styleFrom(
-                          shape: ContinuousRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          // side: BorderSide(
-                          //   color: Colors.red,
-                          // ),
-                        ),
-                        child: Image.asset('assets/images/money.png',
-                            width: 200, height: 150, fit: BoxFit.fitWidth),
-                      ),
-                      OutlinedButton(
-                        onPressed: () {},
-                        style: OutlinedButton.styleFrom(
-                          shape: ContinuousRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          // side: BorderSide(
-                          //   color: Colors.red,
-                          // ),
-                        ),
-                        child: Image.asset('assets/images/credit_card.png',
-                            width: 200, height: 150, fit: BoxFit.cover),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20)),
-                ),
-              )
-              // _pageChoiseBayerType(),
-              // _pageChoisePaymentType(),
-              // _pageamountMoneyReceived(),
-              // Container(
-              //   color: Colors.deepPurple,
-              // ),
+              pagePayBuyer(BuyerType.person),
+              pagePayBuyer(BuyerType.juridicalPerson),
             ],
           ),
         ),
@@ -304,6 +121,7 @@ class Payment extends StatelessWidget {
     );
   }
 }
+
 
 // Widget PageChoisePaymentType(BuildContext context) {
 //   return Column()
