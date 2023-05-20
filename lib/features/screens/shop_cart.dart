@@ -260,7 +260,7 @@ class CartTopWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _cartBloc = context.read<CartBloc>();
+    // final _cartBloc = context.read<CartBloc>();
 
     return Container(
       width: MediaQuery.of(context).size.width * 0.29,

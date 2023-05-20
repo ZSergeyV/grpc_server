@@ -52,8 +52,6 @@ class GeneralTab extends StatefulWidget {
 class _GeneralTabState extends State<GeneralTab> {
   TextEditingController textController = TextEditingController();
 
-  String _serverAdres = "";
-
   @override
   void dispose() {
     textController.dispose();

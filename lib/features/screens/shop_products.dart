@@ -18,7 +18,7 @@ class ListProducts extends StatefulWidget {
 
 class _ListProductsState extends State<ListProducts> {
   final _scrollController = ScrollController();
-  late ProductsBloc _bloc;
+  // late ProductsBloc _bloc;
 
   @override
   void initState() {
