@@ -1,11 +1,12 @@
 import 'package:equatable/equatable.dart';
 
 class Repair extends Equatable {
-  Repair(
+  const Repair(
       {required this.code,
       required this.dateReceipt,
       required this.numberReceipt,
       required this.paid});
+
   final int code;
   final String dateReceipt;
   final int numberReceipt;
