@@ -22,14 +22,12 @@ class RepairBloc extends Bloc<RepairEvent, RepairState> {
         return emit(state.copyWith(
           status: RepairStatus.success,
           repairs: repairs,
-          hasReachedMax: false,
         ));
       }
       final repairs = await repository.getAllRepairs();
       emit(state.copyWith(
         status: RepairStatus.success,
         repairs: List.of(state.repairs)..addAll(repairs),
-        hasReachedMax: false,
       ));
     } catch (_) {
       emit(state.copyWith(status: RepairStatus.failure));
@@ -40,18 +38,16 @@ class RepairBloc extends Bloc<RepairEvent, RepairState> {
       FetchedNoPayRepairs event, Emitter<RepairState> emit) async {
     try {
       if (state.status == RepairStatus.initial) {
-        final repairs = await repository.getAllRepairs();
+        final repairs = await repository.getRepairsNoPay();
         return emit(state.copyWith(
           status: RepairStatus.success,
           repairs: repairs,
-          hasReachedMax: false,
         ));
       }
-      final repairs = await repository.getAllRepairs();
+      final repairs = await repository.getRepairsNoPay();
       emit(state.copyWith(
         status: RepairStatus.success,
         repairs: List.of(state.repairs)..addAll(repairs),
-        hasReachedMax: false,
       ));
     } catch (_) {
       emit(state.copyWith(status: RepairStatus.failure));

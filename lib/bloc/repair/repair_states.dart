@@ -12,7 +12,6 @@ class RepairState extends Equatable {
   RepairState copyWith({
     RepairStatus? status,
     List<Repair>? repairs,
-    bool? hasReachedMax,
   }) {
     return RepairState(
       status: status ?? this.status,

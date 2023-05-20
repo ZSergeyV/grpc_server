@@ -130,8 +130,10 @@ class DataProvider {
     final response = await http.Client().get(
       Uri.http(
         SERVER_ADRESS,
-        '/api/v1/repairs?Last',
-        <String, String>{},
+        '/api/v1/repairs',
+        <String, String>{
+          'Last': 'true',
+        },
       ),
     );
 
