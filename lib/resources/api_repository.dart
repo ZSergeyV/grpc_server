@@ -1,5 +1,6 @@
 import 'package:grpc_server/core/model/categories.dart';
 import 'package:grpc_server/core/model/products.dart';
+import 'package:grpc_server/core/model/repair.dart';
 import 'package:grpc_server/resources/api_provider.dart';
 
 class DataRepository {
@@ -13,4 +14,7 @@ class DataRepository {
 
   Future<Map<String, dynamic>> getProductInfo(int code) =>
       provider.fetchProductInfo(code);
+
+  Future<List<Repair>> getRepairs([int startIndex = 0]) =>
+      provider.fetchRepairs(startIndex);
 }
