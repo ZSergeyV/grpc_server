@@ -20,6 +20,10 @@ class EditRepair extends RepairEvent {
   EditRepair(this.repair);
 }
 
-class RepairFetched extends RepairEvent {
-  RepairFetched([int length = 0]);
+class FetchedAllRepairs extends RepairEvent {
+  FetchedAllRepairs();
+}
+
+class FetchedNoPayRepairs extends RepairEvent {
+  FetchedNoPayRepairs();
 }

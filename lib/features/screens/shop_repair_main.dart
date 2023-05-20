@@ -18,7 +18,7 @@ class RepairShopMain extends StatelessWidget {
                 lazy: false,
                 create: (BuildContext context) =>
                     RepairBloc(repository: dataRepository)
-                      ..add(RepairFetched())),
+                      ..add(FetchedNoPayRepairs())),
           ],
           child: OrientationBuilder(builder: (context, orientation) {
             return SafeArea(

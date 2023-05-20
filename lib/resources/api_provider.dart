@@ -97,47 +97,57 @@ class DataProvider {
     throw Exception('Ошибка получения данных товара');
   }
 
-  Future<List<Repair>> fetchRepairs([int startIndex = 0]) async {
-    // String SERVER_ADRESS = await store.getValue('SERVER_ADRESS') ?? '';
-    // int LIMIT_PRODUCT = await store.getValue('LIMIT_PRODUCT') ?? 50;
+  Future<List<Repair>> fetchAllRepairs([int startIndex = 0]) async {
+    String SERVER_ADRESS = await store.getValue('SERVER_ADRESS') ?? '';
 
-    // final response = await http.Client().get(
-    //   Uri.http(
-    //     SERVER_ADRESS,
-    //     '/api/v1/get-products',
-    //     <String, String>{
-    //       'category-code': idCategory.toString(),
-    //       'skip': '$startIndex',
-    //       'count': '$LIMIT_PRODUCT'
-    //     },
-    //   ),
-    // );
+    final response = await http.Client().get(
+      Uri.http(
+        SERVER_ADRESS,
+        '/api/v1/repairs?Last&show-all',
+        <String, String>{},
+      ),
+    );
 
-    // if (response.statusCode == 200) {
-    //   final body = json.decode(response.body) as List;
-    //   return body.map((dynamic json) {
-    //     final map = json as Map<String, dynamic>;
-    //     final urlThumbImage = map['thumb'] != ''
-    //         ? 'http://$SERVER_ADRESS/static/images/thumbnail/${map['thumb']}'
-    //         : '';
+    if (response.statusCode == 200) {
+      final body = json.decode(response.body) as List;
+      return body.map((dynamic json) {
+        final map = json as Map<String, dynamic>;
 
-    //     return Product(
-    //       code: map['Code'] ?? 0,
-    //       idCategory: idCategory,
-    //       name: map['name'] ?? '',
-    //       price: map['price']!.toDouble() ?? 0,
-    //       quantityStock: map['quantity_stock'] ?? 0,
-    //       quantityStore: map['quantity_store'] ?? 0,
-    //       storageCell: (map['storage_cell'] ?? '').replaceAll('\n', ''),
-    //       storageCellStock:
-    //           (map['storage_cell_stock'] ?? '').replaceAll('\n', ''),
-    //       thumb: urlThumbImage,
-    //     );
-    //   }).toList();
+        return Repair(
+          code: map['code_record']!.toInt() ?? 0,
+          dateReceipt: map['code_record']!.toString(),
+          numberReceipt: map['code_record']!.toInt() ?? 0,
+          paid: map['paid']!,
+        );
+      }).toList();
+    }
+    throw Exception('Ошибка получения товаров');
+  }
 
-    // }
-    return [Repair()];
+  Future<List<Repair>> fetchRepairsNoPay() async {
+    String SERVER_ADRESS = await store.getValue('SERVER_ADRESS') ?? '';
 
-    // throw Exception('Ошибка получения товаров');
+    final response = await http.Client().get(
+      Uri.http(
+        SERVER_ADRESS,
+        '/api/v1/repairs?Last',
+        <String, String>{},
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final body = json.decode(response.body) as List;
+      return body.map((dynamic json) {
+        final map = json as Map<String, dynamic>;
+
+        return Repair(
+          code: map['code_record']!.toInt() ?? 0,
+          dateReceipt: map['code_record']!.toString(),
+          numberReceipt: map['code_record']!.toInt() ?? 0,
+          paid: map['paid']!,
+        );
+      }).toList();
+    }
+    throw Exception('Ошибка получения товаров');
   }
 }

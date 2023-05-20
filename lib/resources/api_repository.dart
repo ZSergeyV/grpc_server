@@ -15,6 +15,6 @@ class DataRepository {
   Future<Map<String, dynamic>> getProductInfo(int code) =>
       provider.fetchProductInfo(code);
 
-  Future<List<Repair>> getRepairs([int startIndex = 0]) =>
-      provider.fetchRepairs(startIndex);
+  Future<List<Repair>> getAllRepairs() => provider.fetchAllRepairs();
+  Future<List<Repair>> getRepairsNoPay() => provider.fetchRepairsNoPay();
 }
