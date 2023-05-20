@@ -22,6 +22,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
           settings: settings,
           builder: (BuildContext context) => const CartPage());
+    case RepairShopMainPageRoute:
+      return MaterialPageRoute(
+          settings: settings,
+          builder: (BuildContext context) => const RepairShopMain());
     case SettingsPageRoute:
       return MaterialPageRoute(builder: (context) => const SettingsPage());
     default:

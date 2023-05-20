@@ -1,8 +1,5 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:grpc_server/bloc/categories/categories_bloc.dart';
 import 'package:grpc_server/config/config.dart';
 import 'package:grpc_server/features/screens/screens.dart';
 import 'package:intl/intl.dart';
@@ -131,8 +128,6 @@ Widget HomeLeftPanel(BuildContext context) {
 }
 
 Widget HomeRightPanel(BuildContext context) {
-  // return BlocBuilder<CategoriesBloc, CategoriesState>(
-  //     builder: (builderContext, state) {
   return Padding(
     padding: const EdgeInsets.all(65.0),
     child: GridView.builder(

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grpc_server/features/screens/screens.dart';
 
-// const String SERVER_ADRESS = '192.168.10.14:5000';
-// const int LIMIT_PRODUCT = 50;
-
 const TextStyle PRODUCT_TEXT_STYLE = TextStyle(
   fontSize: 18,
   fontFamily: 'Roboto',
@@ -28,7 +25,7 @@ List<Map<String, dynamic>> menuItems = [
   {
     'title': 'Мастерская',
     'descriptions': 'Ремонт бытовой техники',
-    'action': ShopMainPageRoute
+    'action': RepairShopMainPageRoute
   },
   {
     'title': 'Интернет заказы',
