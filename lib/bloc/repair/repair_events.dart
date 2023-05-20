@@ -21,5 +21,5 @@ class EditRepair extends RepairEvent {
 }
 
 class RepairFetched extends RepairEvent {
-  RepairFetched(int length);
+  RepairFetched([int length = 0]);
 }

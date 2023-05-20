@@ -6,8 +6,8 @@ import 'package:grpc_server/resources/api_repository.dart';
 part 'repair_states.dart';
 part 'repair_events.dart';
 
-class ProductsBloc extends Bloc<RepairEvent, RepairState> {
-  ProductsBloc({required this.repository}) : super(const RepairState()) {
+class RepairBloc extends Bloc<RepairEvent, RepairState> {
+  RepairBloc({required this.repository}) : super(const RepairState()) {
     on<RepairFetched>(_onFetcheRepairs);
   }
 
