@@ -16,8 +16,8 @@ class ApplicationSettings {
   final Map<String, dynamic> settings = {};
 
   void getSettingsByName(String name) async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    bool isValue = _prefs.containsKey(name);
+    // SharedPreferences _prefs = await SharedPreferences.getInstance();
+    // bool isValue = _prefs.containsKey(name);
     //if (isValue) settings.update({'a', '1221'});
     //(AppSetting(name: name, value: _prefs.get(name)));
     //return isValue ? _prefs.get(name) : '';
