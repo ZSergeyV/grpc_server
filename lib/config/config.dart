@@ -33,3 +33,9 @@ List<Map<String, dynamic>> menuItems = [
     'action': ShopMainPageRoute
   }
 ];
+
+List<Map<String, dynamic>> menuItemsRepair = [
+  {'title': 'Квитанции', 'action': ''},
+  {'title': 'Оплата по квитанциям', 'action': ''},
+  {'title': 'Статистика', 'action': ''}
+];

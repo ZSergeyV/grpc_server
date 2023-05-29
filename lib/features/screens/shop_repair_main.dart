@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grpc_server/bloc/repair/repair_bloc.dart';
+import 'package:grpc_server/features/widgets/repair_widgets.dart';
 import 'package:grpc_server/resources/api_repository.dart';
 
 class RepairShopMain extends StatelessWidget {
@@ -22,32 +23,28 @@ class RepairShopMain extends StatelessWidget {
           ],
           child: OrientationBuilder(builder: (context, orientation) {
             return SafeArea(
-              child: GestureDetector(
-                  child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      child: orientation == Orientation.landscape
-                          ? Row(
-                              children: [
-                                Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      color: Colors.brown,
-                                    )),
-                                Expanded(
-                                    flex: 3,
-                                    child: Container(
-                                      color: Colors.cyan,
-                                    )),
-                              ],
-                            )
-                          : const Column(
-                              children: [
-                                // const Expanded(child: LeftPanelDateTime()),
-                                // Expanded(child: HomeRightPanel(context)),
-                              ],
-                            ))),
-            );
+                child: orientation == Orientation.landscape
+                    ? Row(
+                        // mainAxisAlignment: MainAxisAlignment.start,
+                        // crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RepairMainMenu(),
+                          const VerticalDivider(thickness: 1, width: 1),
+                          Container(),
+                          // Expanded(flex: 1, child: RepairMainMenu()),
+                          // Expanded(
+                          //     flex: 3,
+                          //     child: Container(
+                          //       color: Colors.white,
+                          //     )),
+                        ],
+                      )
+                    : const Column(
+                        children: [
+                          // const Expanded(child: LeftPanelDateTime()),
+                          // Expanded(child: HomeRightPanel(context)),
+                        ],
+                      ));
           })),
     );
   }
