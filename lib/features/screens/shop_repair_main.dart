@@ -28,7 +28,7 @@ class RepairShopMain extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(flex: 1, child: RepairMainMenu()),
+                          const Expanded(flex: 1, child: RepairMainMenu()),
                           Expanded(
                               flex: 3,
                               child: Container(
