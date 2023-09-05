@@ -25,18 +25,15 @@ class RepairShopMain extends StatelessWidget {
             return SafeArea(
                 child: orientation == Orientation.landscape
                     ? Row(
-                        // mainAxisAlignment: MainAxisAlignment.start,
-                        // crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          RepairMainMenu(),
-                          const VerticalDivider(thickness: 1, width: 1),
-                          Container(),
-                          // Expanded(flex: 1, child: RepairMainMenu()),
-                          // Expanded(
-                          //     flex: 3,
-                          //     child: Container(
-                          //       color: Colors.white,
-                          //     )),
+                          Expanded(flex: 1, child: RepairMainMenu()),
+                          Expanded(
+                              flex: 3,
+                              child: Container(
+                                color: Colors.white,
+                              )),
                         ],
                       )
                     : const Column(
