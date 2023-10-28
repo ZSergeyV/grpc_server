@@ -43,14 +43,19 @@ class RepairShopMain extends StatelessWidget {
                                     mainAxisSpacing: 20,
                                     childAspectRatio: 1.7,
                                   ),
+                                  padding: const EdgeInsets.all(20),
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Card(
-                                      color: Colors.redAccent,
+                                      color: _bloc.state.repairs[index].paid
+                                          ? Colors.greenAccent
+                                          : Colors.redAccent,
                                       child: Center(
-                                          child: Text(_bloc
-                                              .state.repairs[index].code
-                                              .toString())),
+                                          child: Text(
+                                              _bloc.state.repairs[index].code
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 22))),
                                     );
                                   },
                                   itemCount: _bloc.state.repairs.length,
