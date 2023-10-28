@@ -14,7 +14,6 @@ void main() {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        
         onGenerateRoute: router.generateRoute,
         theme: basicTheme(),
         home: const HomePage(),

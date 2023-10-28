@@ -22,7 +22,7 @@ dependencies:
   bloc: ^8.1.0
   flutter_bloc: ^8.1.1
   equatable: ^2.0.3
-  http: ^1.1.0
+  http: ^0.13.6
   carousel_slider: ^4.2.1
   badges: ^3.0.3
   cart_stepper: ^4.1.1
@@ -31,7 +31,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^2.0.0
 
 
 flutter:
