@@ -15,7 +15,7 @@ class _RepairMainMenuState extends State<RepairMainMenu> {
 
   @override
   void initState() {
-    _selectedIndex = 0;
+    _selectedIndex = 1;
     super.initState();
   }
 
@@ -40,7 +40,9 @@ class _RepairMainMenuState extends State<RepairMainMenu> {
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          const Padding(padding: EdgeInsets.all(12), child: Text('data')),
+          const Padding(
+              padding: EdgeInsets.all(12),
+              child: Text('Мастерская', style: TextStyle(fontSize: 22))),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(12.0),

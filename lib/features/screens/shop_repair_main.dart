@@ -22,6 +22,8 @@ class RepairShopMain extends StatelessWidget {
                       ..add(FetchedNoPayRepairs())),
           ],
           child: OrientationBuilder(builder: (context, orientation) {
+            // ignore: no_leading_underscores_for_local_identifiers
+            final _bloc = context.read<RepairBloc>();
             return SafeArea(
                 child: orientation == Orientation.landscape
                     ? Row(
@@ -33,14 +35,32 @@ class RepairShopMain extends StatelessWidget {
                               flex: 3,
                               child: Container(
                                 color: Colors.white,
+                                child: GridView.builder(
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 20,
+                                    mainAxisSpacing: 20,
+                                    childAspectRatio: 1.7,
+                                  ),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Card(
+                                      color: Colors.redAccent,
+                                      child: Center(
+                                          child: Text(_bloc
+                                              .state.repairs[index].code
+                                              .toString())),
+                                    );
+                                  },
+                                  itemCount: _bloc.state.repairs.length,
+//ProductListItem(product: state.products[index])
+                                ),
                               )),
                         ],
                       )
                     : const Column(
-                        children: [
-                          // const Expanded(child: LeftPanelDateTime()),
-                          // Expanded(child: HomeRightPanel(context)),
-                        ],
+                        children: [],
                       ));
           })),
     );

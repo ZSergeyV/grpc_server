@@ -37,6 +37,7 @@ List<Map<String, dynamic>> menuItems = [
 ];
 
 List<Map<String, dynamic>> menuItemsRepair = [
+  {'title': 'Создать квитанцию', 'action': ''},
   {'title': 'Квитанции', 'action': ''},
   {'title': 'Оплата по квитанциям', 'action': ''},
   {'title': 'Статистика', 'action': ''}
